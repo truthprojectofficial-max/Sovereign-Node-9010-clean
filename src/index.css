@@ -1,0 +1,83 @@
+@import "tailwindcss";
+
+@theme {
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+  --color-sovereign-900: #0a0a0f;
+  --color-sovereign-800: #12121a;
+  --color-sovereign-700: #1a1a2e;
+  --color-sovereign-600: #16213e;
+  --color-sovereign-500: #0f3460;
+  --color-sovereign-400: #533483;
+  --color-sovereign-300: #e94560;
+  --color-sovereign-200: #00d4aa;
+  --color-sovereign-100: #00ff88;
+}
+
+:root {
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  line-height: 1.5;
+  font-weight: 400;
+  color: #e2e8f0;
+  background-color: #0a0a0f;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+/* Sovereign Grid Overlay */
+.sovereign-grid {
+  background-image:
+    linear-gradient(rgba(0, 212, 170, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 212, 170, 0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* Gauge bar styling */
+.gauge-bar {
+  width: var(--gauge-pct, 0%);
+  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Severity badges */
+.severity-low {
+  background-color: rgb(30 58 138 / 50%);
+  color: rgb(147 197 253);
+  border: 1px solid rgb(29 78 216);
+}
+.severity-medium {
+  background-color: rgb(113 63 18 / 50%);
+  color: rgb(253 224 71);
+  border: 1px solid rgb(161 98 7);
+}
+.severity-high {
+  background-color: rgb(124 45 18 / 50%);
+  color: rgb(253 186 116);
+  border: 1px solid rgb(194 65 12);
+}
+.severity-critical {
+  background-color: rgb(127 29 29 / 50%);
+  color: rgb(252 165 165);
+  border: 1px solid rgb(185 28 28);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #12121a;
+}
+::-webkit-scrollbar-thumb {
+  background: #1a1a2e;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #0f3460;
+}
