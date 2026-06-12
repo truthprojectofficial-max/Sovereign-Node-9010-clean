@@ -1,9 +1,29 @@
+# Logs and text notes
 *.txt
 *.log
 *.md
+
+# Aider AI session files
 .aider*
+
+# Node build artifacts
 node_modules
 dist
+
+# Runtime data directories
 data
 input
 output
+
+# Environment secrets
+.env
+.env.*
+!.env.example
+
+# Git
+.git
+.gitignore
+
+# OS files
+.DS_Store
+Thumbs.db

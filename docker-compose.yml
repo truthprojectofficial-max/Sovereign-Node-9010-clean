@@ -26,8 +26,6 @@ services:
       start_period: 10s
     networks:
       - sovereign-network
-    depends_on:
-      - cli
     restart: unless-stopped
     logging:
       driver: "json-file"
@@ -50,8 +48,8 @@ services:
       DB_PATH: /app/data/database.sqlite
     volumes:
       - ./data:/app/data
-      - ./input:/app/input       # Mount input commands
-      - ./output:/app/output     # Mount output results
+      - ./input:/app/input
+      - ./output:/app/output
     networks:
       - sovereign-network
     depends_on:
@@ -107,7 +105,3 @@ services:
 networks:
   sovereign-network:
     driver: bridge
-
-volumes:
-  data:
-    driver: local
