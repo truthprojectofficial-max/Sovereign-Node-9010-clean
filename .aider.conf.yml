@@ -1,0 +1,66 @@
+##########################################################
+# Aider Configuration for LDDE-ZeroTouch (Local-First Deterministic)
+# Supercharged from the 4 research files in local first/
+##########################################################
+
+# === PRIMARY: Local Ollama (Zero-Cloud Sovereign) ===
+# Research-optimized defaults for MSI Prestige-class hardware (8GB VRAM tier)
+# Recommended: qwen2.5-coder:7b-instruct-q4_K_M (Goldilocks for coding + VRAM)
+# Alternative heavier: qwen2.5-coder:14b or qwen3-9b Q4_K_M (if full GPU offload fits)
+model: ollama/qwen2.5-coder:7b-instruct-q4_K_M
+weak-model: ollama/qwen2.5:3b-instruct-q4_K_M   # Fast router / simple tasks
+editor-model: ollama/qwen2.5-coder:7b-instruct-q4_K_M
+
+# Ollama connection (default localhost:11434)
+# ollama-api-base: http://127.0.0.1:11434
+
+# === Core Behavior (Deterministic Small-Job Specialist) ===
+architect: true
+auto-accept-architect: false          # Human in loop for safety on file ops
+auto-commits: false
+dirty-commits: false
+auto-lint: true
+
+# === UX & Output ===
+dark-mode: true
+pretty: true
+stream: true
+show-diffs: true
+
+# === History Containment (Zero Root Pollution) ===
+chat-history-file: aider/.aider.chat.history.md
+input-history-file: aider/.aider.input.history
+restore-chat-history: true
+
+# === Environment ===
+env-file: .env
+analytics-disable: true
+
+# === Context / Map (tuned for local 7B-9B Q4 models + 32K realistic) ===
+map-tokens: 4096
+map-multiplier-no-files: 3
+map-refresh: auto
+max-chat-history-tokens: 24000
+
+# === Edit & Lint (Python + PowerShell heavy) ===
+edit-format: diff
+auto-lint: true
+lint-cmd:
+  - python: ruff check --fix
+  - python: ruff format
+  # PowerShell: use PSScriptAnalyzer if installed (optional)
+
+# === Git (Traceability + Windows Hygiene) ===
+attribute-author: true
+attribute-committer: true
+attribute-co-authored-by: true
+
+# === Custom Supercharged Instructions ===
+instructions: .aider.instructions.md
+
+# === LDDE-ZeroTouch Specific Guardrails ===
+# These make Aider embody the research (PTCF, TDD loops, zero-touch PS, external SSD, no OneDrive)
+show-model-warnings: true
+cache-prompts: false
+# Prefer structured output for verifier-style self-healing
+# (controlled via instructions + custom commands)

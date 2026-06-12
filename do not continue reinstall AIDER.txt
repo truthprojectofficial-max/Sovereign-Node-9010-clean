@@ -1,0 +1,1647 @@
+Windows PowerShell
+Copyright (C) Microsoft Corporation. All rights reserved.
+
+Install the latest PowerShell for new features and improvements! https://aka.ms/PSWindows
+
+PS C:\Users\justo> $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
+PS C:\Users\justo> Get-Command python -All | Select-Object Name, Source, Version
+
+Name       Source                                                            Version
+----       ------                                                            -------
+python.exe C:\Users\justo\AppData\Local\Programs\Python\Python311\python.exe 3.11.9150.1013
+python.exe C:\Users\justo\AppData\Local\Microsoft\WindowsApps\python.exe     0.0.0.0
+
+
+PS C:\Users\justo> Get-Command pip -All | Select-Object Name, Source, Version
+
+Name    Source                                                                 Version
+----    ------                                                                 -------
+pip.exe C:\Users\justo\AppData\Local\Programs\Python\Python311\Scripts\pip.exe 0.0.0.0
+
+
+PS C:\Users\justo> python --version
+Python 3.11.9
+PS C:\Users\justo> pip --version
+pip 24.0 from C:\Users\justo\AppData\Local\Programs\Python\Python311\Lib\site-packages\pip (python 3.11)
+PS C:\Users\justo> python -m pip --version
+pip 24.0 from C:\Users\justo\AppData\Local\Programs\Python\Python311\Lib\site-packages\pip (python 3.11)
+PS C:\Users\justo> # Navigate to project root
+PS C:\Users\justo> cd C:\Projects\SovereignNode9010
+PS C:\Projects\SovereignNode9010>
+PS C:\Projects\SovereignNode9010> # Create clean 00-99 compliant folder structure
+PS C:\Projects\SovereignNode9010> New-Item -ItemType Directory -Path "core", "data", "deployment", "docs", "logs", "scripts", "tests" -Force
+
+
+    Directory: C:\Projects\SovereignNode9010
+
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+d-----        30/05/2026  11:10 AM                core
+d-----        30/05/2026  11:10 AM                data
+d-----        30/05/2026  11:10 AM                deployment
+d-----        30/05/2026  11:10 AM                docs
+d-----        30/05/2026  11:10 AM                logs
+d-----        30/05/2026  11:10 AM                scripts
+d-----        30/05/2026  11:10 AM                tests
+
+
+PS C:\Projects\SovereignNode9010>
+PS C:\Projects\SovereignNode9010> # Copy all v3.9.1 production files into correct locations
+PS C:\Projects\SovereignNode9010> # (You will need to copy the files from your attachments folder into these locations)
+PS C:\Projects\SovereignNode9010>
+PS C:\Projects\SovereignNode9010> # List current structure for verification
+PS C:\Projects\SovereignNode9010> Get-ChildItem -Recurse | Select-Object FullName, Length | Format-Table -AutoSize
+
+FullName                                 Length
+--------                                 ------
+C:\Projects\SovereignNode9010\core
+C:\Projects\SovereignNode9010\data
+C:\Projects\SovereignNode9010\deployment
+C:\Projects\SovereignNode9010\docs
+C:\Projects\SovereignNode9010\logs
+C:\Projects\SovereignNode9010\scripts
+C:\Projects\SovereignNode9010\tests
+
+
+PS C:\Projects\SovereignNode9010>
+                                  cd C:\Projects\SovereignNode9010
+PS C:\Projects\SovereignNode9010>
+PS C:\Projects\SovereignNode9010> # Move core Python modules to core/
+PS C:\Projects\SovereignNode9010> Move-Item -Path "deployment\02_Technical\groknett_core.py", "deployment\02_Technical\deception_scanner_v3_9_1.py", "deployment\02_Technical\rule_verifier_v3_9_1.py", "deployment\02_Technical\facts_registry.py", "deployment\02_Technical\cidi_governance_engine.py", "deployment\02_Technical\legal_affidavit_generator.py" -Destination "core\" -Force
+PS C:\Projects\SovereignNode9010>
+PS C:\Projects\SovereignNode9010> # Move deployment/config files to deployment/
+PS C:\Projects\SovereignNode9010> Move-Item -Path "deployment\02_Technical\config.py", "deployment\02_Technical\constants.py", "deployment\02_Technical\logging_config.py", "deployment\02_Technical\pyproject.toml", "deployment\02_Technical\.pre-commit-config.yaml", "deployment\02_Technical\requirements.txt", "deployment\02_Technical\pytest.ini" -Destination "deployment\" -Force
+PS C:\Projects\SovereignNode9010>
+PS C:\Projects\SovereignNode9010> # Move GitHub workflows
+PS C:\Projects\SovereignNode9010> Move-Item -Path "deployment\02_Technical\.github" -Destination "deployment\" -Force -ErrorAction SilentlyContinue
+PS C:\Projects\SovereignNode9010>
+PS C:\Projects\SovereignNode9010> # Move README if present
+PS C:\Projects\SovereignNode9010> Move-Item -Path "deployment\02_Technical\README.md" -Destination "docs\" -Force -ErrorAction SilentlyContinue
+PS C:\Projects\SovereignNode9010>
+PS C:\Projects\SovereignNode9010> # Clean up empty folder
+PS C:\Projects\SovereignNode9010> Remove-Item -Path "deployment\02_Technical" -Recurse -Force -ErrorAction SilentlyContinue
+PS C:\Projects\SovereignNode9010>
+PS C:\Projects\SovereignNode9010> # Final verification
+PS C:\Projects\SovereignNode9010> Get-ChildItem -Recurse | Select-Object FullName | Format-Table -AutoSize
+
+FullName
+--------
+C:\Projects\SovereignNode9010\core
+C:\Projects\SovereignNode9010\data
+C:\Projects\SovereignNode9010\deployment
+C:\Projects\SovereignNode9010\docs
+C:\Projects\SovereignNode9010\logs
+C:\Projects\SovereignNode9010\scripts
+C:\Projects\SovereignNode9010\tests
+C:\Projects\SovereignNode9010\main.py
+C:\Projects\SovereignNode9010\core\cidi_governance_engine.py
+C:\Projects\SovereignNode9010\core\deception_scanner_v3_9_1.py
+C:\Projects\SovereignNode9010\core\facts_registry.py
+C:\Projects\SovereignNode9010\core\groknett_core.py
+C:\Projects\SovereignNode9010\core\legal_affidavit_generator.py
+C:\Projects\SovereignNode9010\core\rule_verifier_v3_9_1.py
+C:\Projects\SovereignNode9010\deployment\.github
+C:\Projects\SovereignNode9010\deployment\.pre-commit-config.yaml
+C:\Projects\SovereignNode9010\deployment\config.py
+C:\Projects\SovereignNode9010\deployment\constants.py
+C:\Projects\SovereignNode9010\deployment\logging_config.py
+C:\Projects\SovereignNode9010\deployment\pyproject.toml
+C:\Projects\SovereignNode9010\deployment\pytest.ini
+C:\Projects\SovereignNode9010\deployment\README.md
+C:\Projects\SovereignNode9010\deployment\requirements.txt
+C:\Projects\SovereignNode9010\deployment\.github\workflows
+C:\Projects\SovereignNode9010\deployment\.github\workflows\ci.yml
+
+
+PS C:\Projects\SovereignNode9010> cd C:\Projects\SovereignNode9010
+PS C:\Projects\SovereignNode9010>
+PS C:\Projects\SovereignNode9010> # Create virtual environment
+PS C:\Projects\SovereignNode9010> python -m venv venv
+PS C:\Projects\SovereignNode9010>
+PS C:\Projects\SovereignNode9010> # Activate it
+PS C:\Projects\SovereignNode9010> .\venv\Scripts\Activate.ps1
+(venv) PS C:\Projects\SovereignNode9010>
+(venv) PS C:\Projects\SovereignNode9010> # Upgrade pip
+(venv) PS C:\Projects\SovereignNode9010> python -m pip install --upgrade pip
+Requirement already satisfied: pip in c:\projects\sovereignnode9010\venv\lib\site-packages (24.0)
+Collecting pip
+  Downloading pip-26.1.1-py3-none-any.whl.metadata (4.6 kB)
+Downloading pip-26.1.1-py3-none-any.whl (1.8 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.8/1.8 MB 2.2 MB/s eta 0:00:00
+Installing collected packages: pip
+  Attempting uninstall: pip
+    Found existing installation: pip 24.0
+    Uninstalling pip-24.0:
+      Successfully uninstalled pip-24.0
+Successfully installed pip-26.1.1
+(venv) PS C:\Projects\SovereignNode9010>
+(venv) PS C:\Projects\SovereignNode9010> # Install dependencies
+(venv) PS C:\Projects\SovereignNode9010> pip install -r deployment\requirements.txt
+Collecting python-dateutil>=2.8.2 (from -r deployment\requirements.txt (line 5))
+  Downloading python_dateutil-2.9.0.post0-py2.py3-none-any.whl.metadata (8.4 kB)
+Collecting ruff>=0.4.0 (from -r deployment\requirements.txt (line 8))
+  Downloading ruff-0.15.15-py3-none-win_amd64.whl.metadata (27 kB)
+Collecting mypy>=1.10.0 (from -r deployment\requirements.txt (line 9))
+  Downloading mypy-2.1.0-cp311-cp311-win_amd64.whl.metadata (2.4 kB)
+Collecting bandit>=1.7.9 (from -r deployment\requirements.txt (line 10))
+  Downloading bandit-1.9.4-py3-none-any.whl.metadata (7.1 kB)
+Collecting pre-commit>=3.7.0 (from -r deployment\requirements.txt (line 11))
+  Downloading pre_commit-4.6.0-py2.py3-none-any.whl.metadata (1.2 kB)
+Collecting pytest>=8.2.0 (from -r deployment\requirements.txt (line 14))
+  Downloading pytest-9.0.3-py3-none-any.whl.metadata (7.6 kB)
+Collecting pytest-cov>=5.0.0 (from -r deployment\requirements.txt (line 15))
+  Downloading pytest_cov-7.1.0-py3-none-any.whl.metadata (32 kB)
+Collecting six>=1.5 (from python-dateutil>=2.8.2->-r deployment\requirements.txt (line 5))
+  Downloading six-1.17.0-py2.py3-none-any.whl.metadata (1.7 kB)
+Collecting typing_extensions>=4.6.0 (from mypy>=1.10.0->-r deployment\requirements.txt (line 9))
+  Downloading typing_extensions-4.15.0-py3-none-any.whl.metadata (3.3 kB)
+Collecting mypy_extensions>=1.0.0 (from mypy>=1.10.0->-r deployment\requirements.txt (line 9))
+  Downloading mypy_extensions-1.1.0-py3-none-any.whl.metadata (1.1 kB)
+Collecting pathspec>=1.0.0 (from mypy>=1.10.0->-r deployment\requirements.txt (line 9))
+  Downloading pathspec-1.1.1-py3-none-any.whl.metadata (14 kB)
+Collecting librt>=0.11.0 (from mypy>=1.10.0->-r deployment\requirements.txt (line 9))
+  Downloading librt-0.11.0-cp311-cp311-win_amd64.whl.metadata (1.3 kB)
+Collecting ast-serialize<1.0.0,>=0.3.0 (from mypy>=1.10.0->-r deployment\requirements.txt (line 9))
+  Downloading ast_serialize-0.5.0-cp39-abi3-win_amd64.whl.metadata (1.3 kB)
+Collecting PyYAML>=5.3.1 (from bandit>=1.7.9->-r deployment\requirements.txt (line 10))
+  Downloading pyyaml-6.0.3-cp311-cp311-win_amd64.whl.metadata (2.4 kB)
+Collecting stevedore>=1.20.0 (from bandit>=1.7.9->-r deployment\requirements.txt (line 10))
+  Downloading stevedore-5.8.0-py3-none-any.whl.metadata (2.3 kB)
+Collecting rich (from bandit>=1.7.9->-r deployment\requirements.txt (line 10))
+  Downloading rich-15.0.0-py3-none-any.whl.metadata (18 kB)
+Collecting colorama>=0.3.9 (from bandit>=1.7.9->-r deployment\requirements.txt (line 10))
+  Downloading colorama-0.4.6-py2.py3-none-any.whl.metadata (17 kB)
+Collecting cfgv>=2.0.0 (from pre-commit>=3.7.0->-r deployment\requirements.txt (line 11))
+  Downloading cfgv-3.5.0-py2.py3-none-any.whl.metadata (8.9 kB)
+Collecting identify>=1.0.0 (from pre-commit>=3.7.0->-r deployment\requirements.txt (line 11))
+  Downloading identify-2.6.19-py2.py3-none-any.whl.metadata (4.4 kB)
+Collecting nodeenv>=0.11.1 (from pre-commit>=3.7.0->-r deployment\requirements.txt (line 11))
+  Downloading nodeenv-1.10.0-py2.py3-none-any.whl.metadata (24 kB)
+Collecting virtualenv>=20.10.0 (from pre-commit>=3.7.0->-r deployment\requirements.txt (line 11))
+  Downloading virtualenv-21.4.1-py3-none-any.whl.metadata (3.5 kB)
+Collecting iniconfig>=1.0.1 (from pytest>=8.2.0->-r deployment\requirements.txt (line 14))
+  Downloading iniconfig-2.3.0-py3-none-any.whl.metadata (2.5 kB)
+Collecting packaging>=22 (from pytest>=8.2.0->-r deployment\requirements.txt (line 14))
+  Downloading packaging-26.2-py3-none-any.whl.metadata (3.5 kB)
+Collecting pluggy<2,>=1.5 (from pytest>=8.2.0->-r deployment\requirements.txt (line 14))
+  Downloading pluggy-1.6.0-py3-none-any.whl.metadata (4.8 kB)
+Collecting pygments>=2.7.2 (from pytest>=8.2.0->-r deployment\requirements.txt (line 14))
+  Downloading pygments-2.20.0-py3-none-any.whl.metadata (2.5 kB)
+Collecting coverage>=7.10.6 (from coverage[toml]>=7.10.6->pytest-cov>=5.0.0->-r deployment\requirements.txt (line 15))
+  Downloading coverage-7.14.1-cp311-cp311-win_amd64.whl.metadata (8.8 kB)
+Collecting distlib<1,>=0.3.7 (from virtualenv>=20.10.0->pre-commit>=3.7.0->-r deployment\requirements.txt (line 11))
+  Downloading distlib-0.4.0-py2.py3-none-any.whl.metadata (5.2 kB)
+Collecting filelock<4,>=3.24.2 (from virtualenv>=20.10.0->pre-commit>=3.7.0->-r deployment\requirements.txt (line 11))
+  Downloading filelock-3.29.0-py3-none-any.whl.metadata (2.0 kB)
+Collecting platformdirs<5,>=3.9.1 (from virtualenv>=20.10.0->pre-commit>=3.7.0->-r deployment\requirements.txt (line 11))
+  Downloading platformdirs-4.10.0-py3-none-any.whl.metadata (5.5 kB)
+Collecting python-discovery>=1.4 (from virtualenv>=20.10.0->pre-commit>=3.7.0->-r deployment\requirements.txt (line 11))
+  Downloading python_discovery-1.4.0-py3-none-any.whl.metadata (5.6 kB)
+Collecting markdown-it-py>=2.2.0 (from rich->bandit>=1.7.9->-r deployment\requirements.txt (line 10))
+  Downloading markdown_it_py-4.2.0-py3-none-any.whl.metadata (7.4 kB)
+Collecting mdurl~=0.1 (from markdown-it-py>=2.2.0->rich->bandit>=1.7.9->-r deployment\requirements.txt (line 10))
+  Downloading mdurl-0.1.2-py3-none-any.whl.metadata (1.6 kB)
+Downloading python_dateutil-2.9.0.post0-py2.py3-none-any.whl (229 kB)
+Downloading ruff-0.15.15-py3-none-win_amd64.whl (11.9 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 11.9/11.9 MB 4.7 MB/s  0:00:02
+Downloading mypy-2.1.0-cp311-cp311-win_amd64.whl (11.1 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 11.1/11.1 MB 4.3 MB/s  0:00:02
+Downloading ast_serialize-0.5.0-cp39-abi3-win_amd64.whl (1.1 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.1/1.1 MB 5.4 MB/s  0:00:00
+Downloading bandit-1.9.4-py3-none-any.whl (134 kB)
+Downloading pre_commit-4.6.0-py2.py3-none-any.whl (226 kB)
+Downloading pytest-9.0.3-py3-none-any.whl (375 kB)
+Downloading pluggy-1.6.0-py3-none-any.whl (20 kB)
+Downloading pytest_cov-7.1.0-py3-none-any.whl (22 kB)
+Downloading cfgv-3.5.0-py2.py3-none-any.whl (7.4 kB)
+Downloading colorama-0.4.6-py2.py3-none-any.whl (25 kB)
+Downloading coverage-7.14.1-cp311-cp311-win_amd64.whl (223 kB)
+Downloading identify-2.6.19-py2.py3-none-any.whl (99 kB)
+Downloading iniconfig-2.3.0-py3-none-any.whl (7.5 kB)
+Downloading librt-0.11.0-cp311-cp311-win_amd64.whl (118 kB)
+Downloading mypy_extensions-1.1.0-py3-none-any.whl (5.0 kB)
+Downloading nodeenv-1.10.0-py2.py3-none-any.whl (23 kB)
+Downloading packaging-26.2-py3-none-any.whl (100 kB)
+Downloading pathspec-1.1.1-py3-none-any.whl (57 kB)
+Downloading pygments-2.20.0-py3-none-any.whl (1.2 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.2/1.2 MB 3.0 MB/s  0:00:00
+Downloading pyyaml-6.0.3-cp311-cp311-win_amd64.whl (158 kB)
+Downloading six-1.17.0-py2.py3-none-any.whl (11 kB)
+Downloading stevedore-5.8.0-py3-none-any.whl (54 kB)
+Downloading typing_extensions-4.15.0-py3-none-any.whl (44 kB)
+Downloading virtualenv-21.4.1-py3-none-any.whl (7.6 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 7.6/7.6 MB 4.7 MB/s  0:00:01
+Downloading distlib-0.4.0-py2.py3-none-any.whl (469 kB)
+Downloading filelock-3.29.0-py3-none-any.whl (39 kB)
+Downloading platformdirs-4.10.0-py3-none-any.whl (22 kB)
+Downloading python_discovery-1.4.0-py3-none-any.whl (33 kB)
+Downloading rich-15.0.0-py3-none-any.whl (310 kB)
+Downloading markdown_it_py-4.2.0-py3-none-any.whl (91 kB)
+Downloading mdurl-0.1.2-py3-none-any.whl (10.0 kB)
+Installing collected packages: distlib, typing_extensions, stevedore, six, ruff, PyYAML, pygments, pluggy, platformdirs, pathspec, packaging, nodeenv, mypy_extensions, mdurl, librt, iniconfig, identify, filelock, coverage, colorama, cfgv, ast-serialize, python-discovery, python-dateutil, pytest, mypy, markdown-it-py, virtualenv, rich, pytest-cov, pre-commit, bandit
+Successfully installed PyYAML-6.0.3 ast-serialize-0.5.0 bandit-1.9.4 cfgv-3.5.0 colorama-0.4.6 coverage-7.14.1 distlib-0.4.0 filelock-3.29.0 identify-2.6.19 iniconfig-2.3.0 librt-0.11.0 markdown-it-py-4.2.0 mdurl-0.1.2 mypy-2.1.0 mypy_extensions-1.1.0 nodeenv-1.10.0 packaging-26.2 pathspec-1.1.1 platformdirs-4.10.0 pluggy-1.6.0 pre-commit-4.6.0 pygments-2.20.0 pytest-9.0.3 pytest-cov-7.1.0 python-dateutil-2.9.0.post0 python-discovery-1.4.0 rich-15.0.0 ruff-0.15.15 six-1.17.0 stevedore-5.8.0 typing_extensions-4.15.0 virtualenv-21.4.1
+(venv) PS C:\Projects\SovereignNode9010>
+(venv) PS C:\Projects\SovereignNode9010> # Verify installation
+(venv) PS C:\Projects\SovereignNode9010> pip list
+Package           Version
+----------------- -----------
+ast_serialize     0.5.0
+bandit            1.9.4
+cfgv              3.5.0
+colorama          0.4.6
+coverage          7.14.1
+distlib           0.4.0
+filelock          3.29.0
+identify          2.6.19
+iniconfig         2.3.0
+librt             0.11.0
+markdown-it-py    4.2.0
+mdurl             0.1.2
+mypy              2.1.0
+mypy_extensions   1.1.0
+nodeenv           1.10.0
+packaging         26.2
+pathspec          1.1.1
+pip               26.1.1
+platformdirs      4.10.0
+pluggy            1.6.0
+pre_commit        4.6.0
+Pygments          2.20.0
+pytest            9.0.3
+pytest-cov        7.1.0
+python-dateutil   2.9.0.post0
+python-discovery  1.4.0
+PyYAML            6.0.3
+rich              15.0.0
+ruff              0.15.15
+setuptools        65.5.0
+six               1.17.0
+stevedore         5.8.0
+typing_extensions 4.15.0
+virtualenv        21.4.1
+(venv) PS C:\Projects\SovereignNode9010> # Install pre-commit hooks
+(venv) PS C:\Projects\SovereignNode9010> pre-commit install
+An error has occurred: FatalError: git failed. Is it installed, and are you in a Git repository directory?
+Check the log at C:\Users\justo\.cache\pre-commit\pre-commit.log
+(venv) PS C:\Projects\SovereignNode9010>
+(venv) PS C:\Projects\SovereignNode9010> # Run Ruff (lint + format check)
+(venv) PS C:\Projects\SovereignNode9010> ruff check .
+All checks passed!
+(venv) PS C:\Projects\SovereignNode9010> ruff format --check .
+Would reformat: core\cidi_governance_engine.py
+Would reformat: core\deception_scanner_v3_9_1.py
+Would reformat: core\facts_registry.py
+Would reformat: core\groknett_core.py
+Would reformat: core\legal_affidavit_generator.py
+Would reformat: core\rule_verifier_v3_9_1.py
+Would reformat: deployment\config.py
+Would reformat: deployment\logging_config.py
+Would reformat: main.py
+9 files would be reformatted, 1 file already formatted
+(venv) PS C:\Projects\SovereignNode9010>
+(venv) PS C:\Projects\SovereignNode9010> # Run MyPy (strict type checking)
+(venv) PS C:\Projects\SovereignNode9010> mypy . --strict
+core\legal_affidavit_generator.py:44: error: Returning Any from function declared to return "list[dict[str, Any]]"  [no-any-return]
+core\rule_verifier_v3_9_1.py:22: error: Library stubs not installed for "networkx"  [import-untyped]
+core\rule_verifier_v3_9_1.py:22: note: Hint: "python3 -m pip install types-networkx"
+core\rule_verifier_v3_9_1.py:22: note: (or run "mypy --install-types" to install all missing stub packages)
+core\rule_verifier_v3_9_1.py:372: error: Call to untyped function "_build_dependency_graph" in typed context  [no-untyped-call]
+core\rule_verifier_v3_9_1.py:375: error: Function is missing a return type annotation  [no-untyped-def]
+core\rule_verifier_v3_9_1.py:375: note: Use "-> None" if function does not return a value
+core\rule_verifier_v3_9_1.py:382: error: Argument 1 to "set" has incompatible type "Any | object"; expected "Iterable[Any]"  [arg-type]
+core\rule_verifier_v3_9_1.py:382: error: Argument 1 to "set" has incompatible type "Any | object"; expected "Iterable[object]"  [arg-type]
+core\facts_registry.py:56: error: Argument 1 to "Path" has incompatible type "str | None"; expected "str | PathLike[str]"  [arg-type]
+core\facts_registry.py:59: error: Call to untyped function "_initialize_db" in typed context  [no-untyped-call]
+core\facts_registry.py:62: error: Function is missing a return type annotation  [no-untyped-def]
+core\facts_registry.py:62: note: Use "-> None" if function does not return a value
+core\facts_registry.py:65: error: Incompatible types in assignment (expression has type "Connection", variable has type "None")  [assignment]
+core\facts_registry.py:65: error: Argument 1 to "connect" has incompatible type "str | None"; expected "str | bytes | PathLike[str] | PathLike[bytes]"  [arg-type]
+core\facts_registry.py:66: error: "None" has no attribute "cursor"  [attr-defined]
+core\facts_registry.py:98: error: "None" has no attribute "commit"  [attr-defined]
+core\facts_registry.py:126: error: "None" has no attribute "cursor"  [attr-defined]
+core\facts_registry.py:145: error: "None" has no attribute "commit"  [attr-defined]
+core\facts_registry.py:149: error: "None" has no attribute "cursor"  [attr-defined]
+core\facts_registry.py:159: error: "None" has no attribute "cursor"  [attr-defined]
+core\facts_registry.py:183: error: "None" has no attribute "commit"  [attr-defined]
+core\facts_registry.py:189: error: "None" has no attribute "cursor"  [attr-defined]
+core\facts_registry.py:199: error: "None" has no attribute "cursor"  [attr-defined]
+core\facts_registry.py:222: error: "None" has no attribute "cursor"  [attr-defined]
+core\facts_registry.py:239: error: Function is missing a return type annotation  [no-untyped-def]
+core\facts_registry.py:239: note: Use "-> None" if function does not return a value
+core\facts_registry.py:268: error: Call to untyped function "close" in typed context  [no-untyped-call]
+core\deception_scanner_v3_9_1.py:27: error: Cannot find implementation or library stub for module named "numpy"  [import-not-found]
+core\deception_scanner_v3_9_1.py:27: note: See https://mypy.readthedocs.io/en/stable/running_mypy.html#missing-imports
+core\deception_scanner_v3_9_1.py:355: error: Function is missing a return type annotation  [no-untyped-def]
+core\deception_scanner_v3_9_1.py:355: note: Use "-> None" if function does not return a value
+core\deception_scanner_v3_9_1.py:360: error: Missing type arguments for generic type "dict"  [type-arg]
+core\deception_scanner_v3_9_1.py:420: error: Returning Any from function declared to return "float"  [no-any-return]
+core\deception_scanner_v3_9_1.py:569: error: Function is missing a return type annotation  [no-untyped-def]
+core\deception_scanner_v3_9_1.py:577: error: Call to untyped function "verify_ontology_v391" in typed context  [no-untyped-call]
+core\groknett_core.py:53: error: Missing type arguments for generic type "dict"  [type-arg]
+core\groknett_core.py:58: error: Returning Any from function declared to return "dict[Any, Any]"  [no-any-return]
+core\groknett_core.py:86: error: Name "GateStatus" already defined (possibly by an import)  [no-redef]
+core\groknett_core.py:91: error: Name "BBFBEngine" already defined (possibly by an import)  [no-redef]
+core\groknett_core.py:92: error: Function is missing a type annotation  [no-untyped-def]
+core\groknett_core.py:93: error: Function is missing a type annotation  [no-untyped-def]
+core\groknett_core.py:94: error: Function is missing a type annotation  [no-untyped-def]
+core\groknett_core.py:95: error: Function is missing a type annotation  [no-untyped-def]
+core\groknett_core.py:97: error: Name "FactsRegistry" already defined (possibly by an import)  [no-redef]
+core\groknett_core.py:98: error: Function is missing a type annotation  [no-untyped-def]
+core\groknett_core.py:99: error: Function is missing a type annotation  [no-untyped-def]
+core\groknett_core.py:100: error: Function is missing a type annotation  [no-untyped-def]
+core\groknett_core.py:101: error: Function is missing a return type annotation  [no-untyped-def]
+core\groknett_core.py:102: error: Function is missing a return type annotation  [no-untyped-def]
+core\groknett_core.py:102: note: Use "-> None" if function does not return a value
+core\groknett_core.py:104: error: Name "DeceptionScannerV391" already defined (possibly by an import)  [no-redef]
+core\groknett_core.py:105: error: Function is missing a type annotation  [no-untyped-def]
+core\groknett_core.py:106: error: Function is missing a type annotation  [no-untyped-def]
+core\groknett_core.py:114: error: Name "LegalAffidavitGenerator" already defined (possibly by an import)  [no-redef]
+core\groknett_core.py:115: error: Function is missing a type annotation  [no-untyped-def]
+core\groknett_core.py:116: error: Function is missing a return type annotation  [no-untyped-def]
+core\groknett_core.py:209: error: Function is missing a return type annotation  [no-untyped-def]
+core\groknett_core.py:209: note: Use "-> None" if function does not return a value
+core\groknett_core.py:264: error: Incompatible types in assignment (expression has type "str", variable has type "tuple[str, float, dict[str, Any]] | None")  [assignment]
+core\groknett_core.py:339: error: Function is missing a return type annotation  [no-untyped-def]
+core\groknett_core.py:339: note: Use "-> None" if function does not return a value
+core\groknett_core.py:341: error: Call to untyped function "close" in typed context  [no-untyped-call]
+core\groknett_core.py:345: error: Missing type arguments for generic type "dict"  [type-arg]
+core\groknett_core.py:359: error: Unsupported target for indexed assignment ("Collection[str]")  [index]
+core\groknett_core.py:364: error: Unsupported target for indexed assignment ("Collection[str]")  [index]
+core\groknett_core.py:370: error: Unsupported target for indexed assignment ("Collection[str]")  [index]
+core\groknett_core.py:376: error: Unsupported target for indexed assignment ("Collection[str]")  [index]
+core\groknett_core.py:382: error: Unsupported target for indexed assignment ("Collection[str]")  [index]
+core\groknett_core.py:387: error: Unsupported target for indexed assignment ("Collection[str]")  [index]
+core\groknett_core.py:394: error: Call to untyped function "GrokNetCore" in typed context  [no-untyped-call]
+Found 61 errors in 5 files (checked 10 source files)
+(venv) PS C:\Projects\SovereignNode9010>
+(venv) PS C:\Projects\SovereignNode9010> # Run Bandit (security scan)
+(venv) PS C:\Projects\SovereignNode9010> bandit -r . -ll
+[main]  INFO    profile include tests: None
+[main]  INFO    profile exclude tests: None
+[main]  INFO    cli include tests: None
+[main]  INFO    cli exclude tests: None
+[main]  INFO    running on Python 3.11.9
+Working... ━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━   4% 0:00:46[manager]       WARNING Test in comment: _lines is not a test name or id, ignoring
+[manager]       WARNING Test in comment: is is not a test name or id, ignoring
+[manager]       WARNING Test in comment: a is not a test name or id, ignoring
+[manager]       WARNING Test in comment: dict is not a test name or id, ignoring
+[manager]       WARNING Test in comment: of is not a test name or id, ignoring
+[manager]       WARNING Test in comment: line is not a test name or id, ignoring
+[manager]       WARNING Test in comment: number is not a test name or id, ignoring
+[manager]       WARNING Test in comment: set is not a test name or id, ignoring
+[manager]       WARNING Test in comment: of is not a test name or id, ignoring
+[manager]       WARNING Test in comment: tests is not a test name or id, ignoring
+[manager]       WARNING Test in comment: to is not a test name or id, ignoring
+[manager]       WARNING Test in comment: ignore is not a test name or id, ignoring
+Working... ━╸━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━   5% 0:00:37[manager]       WARNING Test in comment: tkelsey is not a test name or id, ignoring
+[manager]       WARNING Test in comment: catching is not a test name or id, ignoring
+[manager]       WARNING Test in comment: expected is not a test name or id, ignoring
+[manager]       WARNING Test in comment: exception is not a test name or id, ignoring
+Working... ━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━   6% 0:00:34[tester]        WARNING nosec encountered (B108), but no failed test on file .\venv\Lib\site-packages\bandit\plugins\general_hardcoded_tmp.py:61
+Working... ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 100% 0:00:43
+Run started:2026-05-30 02:19:50.371859+00:00
+
+Test results:
+>> Issue: [B104:hardcoded_bind_all_interfaces] Possible binding to all interfaces.
+   Severity: Medium   Confidence: Medium
+   CWE: CWE-605 (https://cwe.mitre.org/data/definitions/605.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b104_hardcoded_bind_all_interfaces.html
+   Location: .\main.py:233:25
+232     def run_server() -> None:
+233         server = HTTPServer(("0.0.0.0", PORT), SovereignHandler)
+234         print(f"[{NODE_ID}] Pure Python server running on http://localhost:{PORT}")
+
+--------------------------------------------------
+>> Issue: [B307:blacklist] Use of possibly insecure function - consider using safer ast.literal_eval.
+   Severity: Medium   Confidence: High
+   CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/blacklists/blacklist_calls.html#b307-eval
+   Location: .\venv\Lib\site-packages\_pytest\_code\code.py:170:15
+169             f_locals.update(vars)
+170             return eval(code, self.f_globals, f_locals)
+171
+
+--------------------------------------------------
+>> Issue: [B102:exec_used] Use of exec detected.
+   Severity: Medium   Confidence: High
+   CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b102_exec_used.html
+   Location: .\venv\Lib\site-packages\_pytest\_py\path.py:1153:24
+1152                        with open(str(self), "rb") as f:
+1153                            exec(f.read(), mod.__dict__)
+1154                    except BaseException:
+
+--------------------------------------------------
+>> Issue: [B102:exec_used] Use of exec detected.
+   Severity: Medium   Confidence: High
+   CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b102_exec_used.html
+   Location: .\venv\Lib\site-packages\_pytest\assertion\rewrite.py:197:8
+196                 state.trace(f"found cached rewritten pyc for {fn}")
+197             exec(co, module.__dict__)
+198
+
+--------------------------------------------------
+>> Issue: [B302:blacklist] Deserialization with the marshal module is possibly dangerous.
+   Severity: Medium   Confidence: High
+   CWE: CWE-502 (https://cwe.mitre.org/data/definitions/502.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/blacklists/blacklist_calls.html#b302-marshal
+   Location: .\venv\Lib\site-packages\_pytest\assertion\rewrite.py:402:17
+401             try:
+402                 co = marshal.load(fp)
+403             except Exception as e:
+
+--------------------------------------------------
+>> Issue: [B307:blacklist] Use of possibly insecure function - consider using safer ast.literal_eval.
+   Severity: Medium   Confidence: High
+   CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/blacklists/blacklist_calls.html#b307-eval
+   Location: .\venv\Lib\site-packages\_pytest\mark\expression.py:353:20
+352             """
+353             return bool(eval(self._code, {"__builtins__": {}}, MatcherAdapter(matcher)))
+
+--------------------------------------------------
+>> Issue: [B310:blacklist] Audit url open for permitted schemes. Allowing use of file:/ or custom schemes is often unexpected.
+   Severity: Medium   Confidence: High
+   CWE: CWE-22 (https://cwe.mitre.org/data/definitions/22.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/blacklists/blacklist_calls.html#b310-urllib-urlopen
+   Location: .\venv\Lib\site-packages\_pytest\pastebin.py:87:12
+86              response: str = (
+87                  urlopen(url, data=urlencode(params).encode("ascii")).read().decode("utf-8")
+88              )
+
+--------------------------------------------------
+>> Issue: [B307:blacklist] Use of possibly insecure function - consider using safer ast.literal_eval.
+   Severity: Medium   Confidence: High
+   CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/blacklists/blacklist_calls.html#b307-eval
+   Location: .\venv\Lib\site-packages\_pytest\pytester.py:295:23
+294                         print("NAMEMATCH", name, call)
+295                         if eval(check, backlocals, call.__dict__):
+296                             print("CHECKERMATCH", repr(check), "->", call)
+
+--------------------------------------------------
+>> Issue: [B307:blacklist] Use of possibly insecure function - consider using safer ast.literal_eval.
+   Severity: Medium   Confidence: High
+   CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/blacklists/blacklist_calls.html#b307-eval
+   Location: .\venv\Lib\site-packages\_pytest\skipping.py:119:21
+118                 condition_code = compile(condition, filename, "eval")
+119                 result = eval(condition_code, globals_)
+120             except SyntaxError as exc:
+
+--------------------------------------------------
+>> Issue: [B613:trojansource] A Python source file contains bidirectional control characters ('\u202e').
+   Severity: High   Confidence: Medium
+   CWE: CWE-838 (https://cwe.mitre.org/data/definitions/838.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b613_trojansource.html
+   Location: .\venv\Lib\site-packages\bandit\plugins\trojansource.py:22:36
+21           3          access_level = "user"
+22           4      if access_level != 'none‮⁦': # Check if admin ⁩⁦' and access_level != 'user
+23           5          print("You are an admin.\n")
+
+--------------------------------------------------
+>> Issue: [B102:exec_used] Use of exec detected.
+   Severity: Medium   Confidence: High
+   CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b102_exec_used.html
+   Location: .\venv\Lib\site-packages\coverage\execfile.py:213:12
+212             try:
+213                 exec(code, main_mod.__dict__)
+214             except SystemExit:  # pylint: disable=try-except-raise
+
+--------------------------------------------------
+>> Issue: [B302:blacklist] Deserialization with the marshal module is possibly dangerous.
+   Severity: Medium   Confidence: High
+   CWE: CWE-502 (https://cwe.mitre.org/data/definitions/502.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/blacklists/blacklist_calls.html#b302-marshal
+   Location: .\venv\Lib\site-packages\coverage\execfile.py:326:15
+325             # The rest of the file is the code object we want.
+326             code = marshal.load(fpyc)
+327             assert isinstance(code, CodeType)
+
+--------------------------------------------------
+>> Issue: [B307:blacklist] Use of possibly insecure function - consider using safer ast.literal_eval.
+   Severity: Medium   Confidence: High
+   CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/blacklists/blacklist_calls.html#b307-eval
+   Location: .\venv\Lib\site-packages\coverage\parser.py:589:29
+588                 if node.id in ["True", "False", "None", "__debug__"]:
+589                     return True, eval(node.id)  # pylint: disable=eval-used
+590             case ast.UnaryOp():
+
+--------------------------------------------------
+>> Issue: [B108:hardcoded_tmp_directory] Probable insecure usage of temp file/directory.
+   Severity: Medium   Confidence: Medium
+   CWE: CWE-377 (https://cwe.mitre.org/data/definitions/377.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b108_hardcoded_tmp_directory.html
+   Location: .\venv\Lib\site-packages\coverage\pytracer.py:129:18
+128             """For hard-core logging of what this tracer is doing."""
+129             with open("/tmp/debug_trace.txt", "a", encoding="utf-8") as f:
+130                 f.write(f"{marker} {self.id}[{len(self.data_stack)}]")
+
+--------------------------------------------------
+>> Issue: [B608:hardcoded_sql_expressions] Possible SQL injection vector through string-based query construction.
+   Severity: Medium   Confidence: Medium
+   CWE: CWE-89 (https://cwe.mitre.org/data/definitions/89.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b608_hardcoded_sql_expressions.html
+   Location: .\venv\Lib\site-packages\coverage\sqldata.py:993:33
+992                     context_clause = " or ".join(["context REGEXP ?"] * len(contexts))
+993                     with con.execute("SELECT id FROM context WHERE " + context_clause, contexts) as cur:
+994                         self._query_context_ids = [row[0] for row in cur.fetchall()]
+
+--------------------------------------------------
+>> Issue: [B108:hardcoded_tmp_directory] Probable insecure usage of temp file/directory.
+   Severity: Medium   Confidence: Medium
+   CWE: CWE-377 (https://cwe.mitre.org/data/definitions/377.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b108_hardcoded_tmp_directory.html
+   Location: .\venv\Lib\site-packages\coverage\sysmon.py:102:12
+101             for filename in [
+102                 "/tmp/foo.out",
+103                 # f"{root}.out",
+104                 # f"{root}-{pid}.out",
+105                 # f"{root}-{pid}-{tslug}.out",
+106             ]:
+107                 with open(filename, "a", encoding="utf-8") as f:
+108                     try:
+
+--------------------------------------------------
+>> Issue: [B102:exec_used] Use of exec detected.
+   Severity: Medium   Confidence: High
+   CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b102_exec_used.html
+   Location: .\venv\Lib\site-packages\coverage\templite.py:74:8
+73              global_namespace: dict[str, Any] = {}
+74              exec(python_source, global_namespace)
+75              return global_namespace
+
+--------------------------------------------------
+>> Issue: [B411:blacklist] Using xmlrpclib to parse untrusted XML data is known to be vulnerable to XML attacks. Use defusedxml.xmlrpc.monkey_patch() function to monkey-patch xmlrpclib and mitigate XML vulnerabilities.
+   Severity: High   Confidence: High
+   CWE: CWE-20 (https://cwe.mitre.org/data/definitions/20.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/blacklists/blacklist_imports.html#b411-import-xmlrpclib
+   Location: .\venv\Lib\site-packages\distlib\compat.py:42:4
+41          import httplib
+42          import xmlrpclib
+43          import Queue as queue
+
+--------------------------------------------------
+>> Issue: [B411:blacklist] Using xmlrpc.client to parse untrusted XML data is known to be vulnerable to XML attacks. Use defusedxml.xmlrpc.monkey_patch() function to monkey-patch xmlrpclib and mitigate XML vulnerabilities.
+   Severity: High   Confidence: High
+   CWE: CWE-20 (https://cwe.mitre.org/data/definitions/20.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/blacklists/blacklist_imports.html#b411-import-xmlrpclib
+   Location: .\venv\Lib\site-packages\distlib\compat.py:81:4
+80          import urllib.request as urllib2
+81          import xmlrpc.client as xmlrpclib
+82          import queue
+
+--------------------------------------------------
+>> Issue: [B324:hashlib] Use of weak MD5 hash for security. Consider usedforsecurity=False
+   Severity: High   Confidence: High
+   CWE: CWE-327 (https://cwe.mitre.org/data/definitions/327.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b324_hashlib.html
+   Location: .\venv\Lib\site-packages\distlib\database.py:1007:19
+1006                    f.close()
+1007                return hashlib.md5(content).hexdigest()
+1008
+
+--------------------------------------------------
+>> Issue: [B324:hashlib] Use of weak MD5 hash for security. Consider usedforsecurity=False
+   Severity: High   Confidence: High
+   CWE: CWE-327 (https://cwe.mitre.org/data/definitions/327.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b324_hashlib.html
+   Location: .\venv\Lib\site-packages\distlib\index.py:269:21
+268                 file_data = f.read()
+269             md5_digest = hashlib.md5(file_data).hexdigest()
+270             sha256_digest = hashlib.sha256(file_data).hexdigest()
+
+--------------------------------------------------
+>> Issue: [B202:tarfile_unsafe_members] tarfile.extractall used without any validation. Please check and discard dangerous members.
+   Severity: High   Confidence: High
+   CWE: CWE-22 (https://cwe.mitre.org/data/definitions/22.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b202_tarfile_unsafe_members.html
+   Location: .\venv\Lib\site-packages\distlib\util.py:1285:8
+1284
+1285            archive.extractall(dest_dir)
+1286
+
+--------------------------------------------------
+>> Issue: [B301:blacklist] Pickle and modules that wrap it can be unsafe when used to deserialize untrusted data, possible security issue.
+   Severity: Medium   Confidence: High
+   CWE: CWE-502 (https://cwe.mitre.org/data/definitions/502.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/blacklists/blacklist_calls.html#b301-pickle
+   Location: .\venv\Lib\site-packages\mypy\dmypy\client.py:624:23
+623
+624             options_dict = pickle.loads(b64decode(args.options_data))
+625             options_obj = Options()
+
+--------------------------------------------------
+>> Issue: [B608:hardcoded_sql_expressions] Possible SQL injection vector through string-based query construction.
+   Severity: Medium   Confidence: Medium
+   CWE: CWE-89 (https://cwe.mitre.org/data/definitions/89.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b608_hardcoded_sql_expressions.html
+   Location: .\venv\Lib\site-packages\mypy\metastore.py:216:25
+215             db = self._db_for(name)
+216             cur = db.execute(f"SELECT {field} FROM files2 WHERE path = ?", (name,))
+217             results = cur.fetchall()
+
+--------------------------------------------------
+>> Issue: [B602:subprocess_popen_with_shell_equals_true] subprocess call with shell=True identified, security issue.
+   Severity: High   Confidence: High
+   CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b602_subprocess_popen_with_shell_equals_true.html
+   Location: .\venv\Lib\site-packages\mypy\test\testdaemon.py:90:17
+89              output = subprocess.check_output(
+90                  input, shell=True, stderr=subprocess.STDOUT, text=True, cwd=test_temp_dir, env=env
+91              )
+92              return 0, output
+93          except subprocess.CalledProcessError as err:
+
+--------------------------------------------------
+>> Issue: [B324:hashlib] Use of weak SHA1 hash for security. Consider usedforsecurity=False
+   Severity: High   Confidence: High
+   CWE: CWE-327 (https://cwe.mitre.org/data/definitions/327.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b324_hashlib.html
+   Location: .\venv\Lib\site-packages\mypy\util.py:579:11
+578         """
+579         return hashlib.sha1(data).hexdigest()
+580
+
+--------------------------------------------------
+>> Issue: [B324:hashlib] Use of weak SHA1 hash for security. Consider usedforsecurity=False
+   Severity: High   Confidence: High
+   CWE: CWE-327 (https://cwe.mitre.org/data/definitions/327.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b324_hashlib.html
+   Location: .\venv\Lib\site-packages\mypy\util.py:587:11
+586         """
+587         return hashlib.sha1(data).digest()
+588
+
+--------------------------------------------------
+>> Issue: [B324:hashlib] Use of weak SHA1 hash for security. Consider usedforsecurity=False
+   Severity: High   Confidence: High
+   CWE: CWE-327 (https://cwe.mitre.org/data/definitions/327.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b324_hashlib.html
+   Location: .\venv\Lib\site-packages\mypyc\build.py:291:8
+290
+291         h = hashlib.sha1()
+292         h.update(",".join(modules).encode())
+
+--------------------------------------------------
+>> Issue: [B102:exec_used] Use of exec detected.
+   Severity: Medium   Confidence: High
+   CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b102_exec_used.html
+   Location: .\venv\Lib\site-packages\mypyc\test\test_run.py:133:16
+132                 with open(script_name, "rb") as f:
+133                     exec(f.read(), g)
+134             finally:
+
+--------------------------------------------------
+>> Issue: [B602:subprocess_popen_with_shell_equals_true] subprocess call with shell=True identified, security issue.
+   Severity: High   Confidence: High
+   CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b602_subprocess_popen_with_shell_equals_true.html
+   Location: .\venv\Lib\site-packages\nodeenv.py:500:15
+499                 cmd, stderr=subprocess.STDOUT, stdin=None, stdout=stdout,
+500                 cwd=cwd, env=env, shell=in_shell)
+501         except Exception:
+502             e = sys.exc_info()[1]
+503             logger.error("Error %s while executing command %s" % (e, cmd_desc))
+
+--------------------------------------------------
+>> Issue: [B202:tarfile_unsafe_members] tarfile.extractall used without any validation. Please check and discard dangerous members.
+   Severity: High   Confidence: High
+   CWE: CWE-22 (https://cwe.mitre.org/data/definitions/22.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b202_tarfile_unsafe_members.html
+   Location: .\venv\Lib\site-packages\nodeenv.py:639:8
+638             ]
+639             archive.extractall(src_dir, extract_list)
+640
+
+--------------------------------------------------
+>> Issue: [B310:blacklist] Audit url open for permitted schemes. Allowing use of file:/ or custom schemes is often unexpected.
+   Severity: Medium   Confidence: High
+   CWE: CWE-22 (https://cwe.mitre.org/data/definitions/22.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/blacklists/blacklist_calls.html#b310-urllib-urlopen
+   Location: .\venv\Lib\site-packages\nodeenv.py:651:15
+650             context.verify_mode = ssl.CERT_NONE
+651             return urllib2.urlopen(req, context=context)
+652         return urllib2.urlopen(req)
+
+--------------------------------------------------
+>> Issue: [B310:blacklist] Audit url open for permitted schemes. Allowing use of file:/ or custom schemes is often unexpected.
+   Severity: Medium   Confidence: High
+   CWE: CWE-22 (https://cwe.mitre.org/data/definitions/22.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/blacklists/blacklist_calls.html#b310-urllib-urlopen
+   Location: .\venv\Lib\site-packages\nodeenv.py:652:11
+651             return urllib2.urlopen(req, context=context)
+652         return urllib2.urlopen(req)
+653
+
+--------------------------------------------------
+>> Issue: [B202:tarfile_unsafe_members] tarfile.extractall used without any validation. Please check and discard dangerous members.
+   Severity: High   Confidence: High
+   CWE: CWE-22 (https://cwe.mitre.org/data/definitions/22.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b202_tarfile_unsafe_members.html
+   Location: .\venv\Lib\site-packages\nodeenv.py:859:8
+858         with zipfile.ZipFile(npm_contents, 'r') as zipf:
+859             zipf.extractall(src_dir)
+860
+
+--------------------------------------------------
+>> Issue: [B604:any_other_function_with_shell_equals_true] Function call with shell=True parameter identified, possible security issue.
+   Severity: Medium   Confidence: Low
+   CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b604_any_other_function_with_shell_equals_true.html
+   Location: .\venv\Lib\site-packages\pip\_internal\commands\completion.py:130:18
+129                 )
+130                 print(BASE_COMPLETION.format(script=script, shell=options.shell))
+131                 return SUCCESS
+
+--------------------------------------------------
+>> Issue: [B602:subprocess_popen_with_shell_equals_true] subprocess call with shell=True identified, security issue.
+   Severity: High   Confidence: High
+   CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b602_subprocess_popen_with_shell_equals_true.html
+   Location: .\venv\Lib\site-packages\pip\_internal\commands\configuration.py:247:12
+246             try:
+247                 subprocess.check_call(f'{editor} "{fname}"', shell=True)
+248             except FileNotFoundError as e:
+
+--------------------------------------------------
+>> Issue: [B411:blacklist] Using xmlrpc.client to parse untrusted XML data is known to be vulnerable to XML attacks. Use defusedxml.xmlrpc.monkey_patch() function to monkey-patch xmlrpclib and mitigate XML vulnerabilities.
+   Severity: High   Confidence: High
+   CWE: CWE-20 (https://cwe.mitre.org/data/definitions/20.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/blacklists/blacklist_imports.html#b411-import-xmlrpclib
+   Location: .\venv\Lib\site-packages\pip\_internal\commands\search.py:7:0
+6       import textwrap
+7       import xmlrpc.client
+8       from collections import OrderedDict
+
+--------------------------------------------------
+>> Issue: [B411:blacklist] Using xmlrpc.client to parse untrusted XML data is known to be vulnerable to XML attacks. Use defusedxml.xmlrpc.monkey_patch() function to monkey-patch xmlrpclib and mitigate XML vulnerabilities.
+   Severity: High   Confidence: High
+   CWE: CWE-20 (https://cwe.mitre.org/data/definitions/20.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/blacklists/blacklist_imports.html#b411-import-xmlrpclib
+   Location: .\venv\Lib\site-packages\pip\_internal\network\xmlrpc.py:5:0
+4       import urllib.parse
+5       import xmlrpc.client
+6       from typing import TYPE_CHECKING
+
+--------------------------------------------------
+>> Issue: [B411:blacklist] Using _HostType to parse untrusted XML data is known to be vulnerable to XML attacks. Use defusedxml.xmlrpc.monkey_patch() function to monkey-patch xmlrpclib and mitigate XML vulnerabilities.
+   Severity: High   Confidence: High
+   CWE: CWE-20 (https://cwe.mitre.org/data/definitions/20.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/blacklists/blacklist_imports.html#b411-import-xmlrpclib
+   Location: .\venv\Lib\site-packages\pip\_internal\network\xmlrpc.py:13:4
+12      if TYPE_CHECKING:
+13          from xmlrpc.client import _HostType, _Marshallable
+14
+
+--------------------------------------------------
+>> Issue: [B608:hardcoded_sql_expressions] Possible SQL injection vector through string-based query construction.
+   Severity: Medium   Confidence: Low
+   CWE: CWE-89 (https://cwe.mitre.org/data/definitions/89.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b608_hardcoded_sql_expressions.html
+   Location: .\venv\Lib\site-packages\pip\_internal\utils\pylock.py:282:12
+281             raise InstallationError(
+282                 f"Cannot select requirements from pylock file {pylock_path_or_url!r}: {exc}"
+283             ) from exc
+
+--------------------------------------------------
+>> Issue: [B202:tarfile_unsafe_members] tarfile.extractall used without any validation. Please check and discard dangerous members.
+   Severity: High   Confidence: High
+   CWE: CWE-22 (https://cwe.mitre.org/data/definitions/22.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b202_tarfile_unsafe_members.html
+   Location: .\venv\Lib\site-packages\pip\_internal\utils\unpacking.py:245:12
+244
+245                 tar.extractall(location, filter=pip_filter)
+246
+
+--------------------------------------------------
+>> Issue: [B411:blacklist] Using xmlrpclib to parse untrusted XML data is known to be vulnerable to XML attacks. Use defusedxml.xmlrpc.monkey_patch() function to monkey-patch xmlrpclib and mitigate XML vulnerabilities.
+   Severity: High   Confidence: High
+   CWE: CWE-20 (https://cwe.mitre.org/data/definitions/20.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/blacklists/blacklist_imports.html#b411-import-xmlrpclib
+   Location: .\venv\Lib\site-packages\pip\_vendor\distlib\compat.py:42:4
+41          import httplib
+42          import xmlrpclib
+43          import Queue as queue
+
+--------------------------------------------------
+>> Issue: [B411:blacklist] Using xmlrpc.client to parse untrusted XML data is known to be vulnerable to XML attacks. Use defusedxml.xmlrpc.monkey_patch() function to monkey-patch xmlrpclib and mitigate XML vulnerabilities.
+   Severity: High   Confidence: High
+   CWE: CWE-20 (https://cwe.mitre.org/data/definitions/20.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/blacklists/blacklist_imports.html#b411-import-xmlrpclib
+   Location: .\venv\Lib\site-packages\pip\_vendor\distlib\compat.py:81:4
+80          import urllib.request as urllib2
+81          import xmlrpc.client as xmlrpclib
+82          import queue
+
+--------------------------------------------------
+>> Issue: [B202:tarfile_unsafe_members] tarfile.extractall used without any validation. Please check and discard dangerous members.
+   Severity: High   Confidence: High
+   CWE: CWE-22 (https://cwe.mitre.org/data/definitions/22.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b202_tarfile_unsafe_members.html
+   Location: .\venv\Lib\site-packages\pip\_vendor\distlib\util.py:1285:8
+1284
+1285            archive.extractall(dest_dir)
+1286
+
+--------------------------------------------------
+>> Issue: [B102:exec_used] Use of exec detected.
+   Severity: Medium   Confidence: High
+   CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b102_exec_used.html
+   Location: .\venv\Lib\site-packages\pip\_vendor\pkg_resources\__init__.py:1714:12
+1713                code = compile(source, script_filename, 'exec')
+1714                exec(code, namespace, namespace)
+1715            else:
+
+--------------------------------------------------
+>> Issue: [B102:exec_used] Use of exec detected.
+   Severity: Medium   Confidence: High
+   CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b102_exec_used.html
+   Location: .\venv\Lib\site-packages\pip\_vendor\pkg_resources\__init__.py:1725:12
+1724                script_code = compile(script_text, script_filename, 'exec')
+1725                exec(script_code, namespace, namespace)
+1726
+
+--------------------------------------------------
+>> Issue: [B108:hardcoded_tmp_directory] Probable insecure usage of temp file/directory.
+   Severity: Medium   Confidence: Medium
+   CWE: CWE-377 (https://cwe.mitre.org/data/definitions/377.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b108_hardcoded_tmp_directory.html
+   Location: .\venv\Lib\site-packages\pip\_vendor\platformdirs\unix.py:182:27
+181                     if not Path(path).exists():
+182                         path = f"/tmp/runtime-{getuid()}"  # noqa: S108
+183                 else:
+
+--------------------------------------------------
+>> Issue: [B102:exec_used] Use of exec detected.
+   Severity: Medium   Confidence: High
+   CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b102_exec_used.html
+   Location: .\venv\Lib\site-packages\pip\_vendor\pygments\formatters\__init__.py:103:12
+102             with open(filename, 'rb') as f:
+103                 exec(f.read(), custom_namespace)
+104             # Retrieve the class `formattername` from that namespace
+
+--------------------------------------------------
+>> Issue: [B102:exec_used] Use of exec detected.
+   Severity: Medium   Confidence: High
+   CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b102_exec_used.html
+   Location: .\venv\Lib\site-packages\pip\_vendor\pygments\lexers\__init__.py:154:12
+153             with open(filename, 'rb') as f:
+154                 exec(f.read(), custom_namespace)
+155             # Retrieve the class `lexername` from that namespace
+
+--------------------------------------------------
+>> Issue: [B324:hashlib] Use of weak MD5 hash for security. Consider usedforsecurity=False
+   Severity: High   Confidence: High
+   CWE: CWE-327 (https://cwe.mitre.org/data/definitions/327.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b324_hashlib.html
+   Location: .\venv\Lib\site-packages\pip\_vendor\requests\auth.py:148:23
+147                         x = x.encode("utf-8")
+148                     return hashlib.md5(x).hexdigest()
+149
+
+--------------------------------------------------
+>> Issue: [B324:hashlib] Use of weak SHA1 hash for security. Consider usedforsecurity=False
+   Severity: High   Confidence: High
+   CWE: CWE-327 (https://cwe.mitre.org/data/definitions/327.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b324_hashlib.html
+   Location: .\venv\Lib\site-packages\pip\_vendor\requests\auth.py:156:23
+155                         x = x.encode("utf-8")
+156                     return hashlib.sha1(x).hexdigest()
+157
+
+--------------------------------------------------
+>> Issue: [B324:hashlib] Use of weak SHA1 hash for security. Consider usedforsecurity=False
+   Severity: High   Confidence: High
+   CWE: CWE-327 (https://cwe.mitre.org/data/definitions/327.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b324_hashlib.html
+   Location: .\venv\Lib\site-packages\pip\_vendor\requests\auth.py:205:17
+204
+205             cnonce = hashlib.sha1(s).hexdigest()[:16]
+206             if _algorithm == "MD5-SESS":
+
+--------------------------------------------------
+>> Issue: [B301:blacklist] Pickle and modules that wrap it can be unsafe when used to deserialize untrusted data, possible security issue.
+   Severity: Medium   Confidence: High
+   CWE: CWE-502 (https://cwe.mitre.org/data/definitions/502.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/blacklists/blacklist_calls.html#b301-pickle
+   Location: .\venv\Lib\site-packages\pip\_vendor\rich\style.py:471:66
+470             """Get meta information (can not be changed after construction)."""
+471             return {} if self._meta is None else cast(Dict[str, Any], loads(self._meta))
+472
+
+--------------------------------------------------
+>> Issue: [B102:exec_used] Use of exec detected.
+   Severity: Medium   Confidence: High
+   CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b102_exec_used.html
+   Location: .\venv\Lib\site-packages\pkg_resources\__init__.py:1472:12
+1471                code = compile(source, script_filename, 'exec')
+1472                exec(code, namespace, namespace)
+1473            else:
+
+--------------------------------------------------
+>> Issue: [B102:exec_used] Use of exec detected.
+   Severity: Medium   Confidence: High
+   CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b102_exec_used.html
+   Location: .\venv\Lib\site-packages\pkg_resources\__init__.py:1479:12
+1478                script_code = compile(script_text, script_filename, 'exec')
+1479                exec(script_code, namespace, namespace)
+1480
+
+--------------------------------------------------
+>> Issue: [B604:any_other_function_with_shell_equals_true] Function call with shell=True parameter identified, possible security issue.
+   Severity: Medium   Confidence: Low
+   CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b604_any_other_function_with_shell_equals_true.html
+   Location: .\venv\Lib\site-packages\pkg_resources\_vendor\jaraco\context.py:31:17
+30          if runner is None:
+31              runner = functools.partial(subprocess.check_call, shell=True)
+32          # In the tar command, use --strip-components=1 to strip the first path and
+
+--------------------------------------------------
+>> Issue: [B307:blacklist] Use of possibly insecure function - consider using safer ast.literal_eval.
+   Severity: Medium   Confidence: High
+   CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/blacklists/blacklist_calls.html#b307-eval
+   Location: .\venv\Lib\site-packages\pkg_resources\_vendor\jaraco\functools.py:519:27
+518                     try:
+519                         return eval(use)
+520                     except TypeError:
+
+--------------------------------------------------
+>> Issue: [B108:hardcoded_tmp_directory] Probable insecure usage of temp file/directory.
+   Severity: Medium   Confidence: Medium
+   CWE: CWE-377 (https://cwe.mitre.org/data/definitions/377.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b108_hardcoded_tmp_directory.html
+   Location: .\venv\Lib\site-packages\platformdirs\unix.py:184:19
+183             if sys.platform.startswith("openbsd"):
+184                 path = f"/tmp/run/user/{getuid()}"  # noqa: S108
+185             elif sys.platform.startswith(("freebsd", "netbsd")):
+
+--------------------------------------------------
+>> Issue: [B324:hashlib] Use of weak MD5 hash for security. Consider usedforsecurity=False
+   Severity: High   Confidence: High
+   CWE: CWE-327 (https://cwe.mitre.org/data/definitions/327.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b324_hashlib.html
+   Location: .\venv\Lib\site-packages\pre_commit\languages\docker.py:70:11
+69      def md5(s: str) -> str:  # pragma: win32 no cover
+70          return hashlib.md5(s.encode()).hexdigest()
+71
+
+--------------------------------------------------
+>> Issue: [B314:blacklist] Using xml.etree.ElementTree.parse to parse untrusted XML data is known to be vulnerable to XML attacks. Replace xml.etree.ElementTree.parse with its defusedxml equivalent function or make sure defusedxml.defuse_stdlib() is called
+   Severity: Medium   Confidence: High
+   CWE: CWE-20 (https://cwe.mitre.org/data/definitions/20.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/blacklists/blacklist_calls.html#b313-b320-xml-bad-elementtree
+   Location: .\venv\Lib\site-packages\pre_commit\languages\dotnet.py:86:23
+85                  with f.open(nuspec) as spec:
+86                      tree = xml.etree.ElementTree.parse(spec)
+87
+
+--------------------------------------------------
+>> Issue: [B310:blacklist] Audit url open for permitted schemes. Allowing use of file:/ or custom schemes is often unexpected.
+   Severity: Medium   Confidence: High
+   CWE: CWE-22 (https://cwe.mitre.org/data/definitions/22.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/blacklists/blacklist_calls.html#b310-urllib-urlopen
+   Location: .\venv\Lib\site-packages\pre_commit\languages\golang.py:92:11
+91              return version
+92          resp = urllib.request.urlopen('https://go.dev/dl/?mode=json')
+93          return json.load(resp)[0]['version'].removeprefix('go')
+
+--------------------------------------------------
+>> Issue: [B310:blacklist] Audit url open for permitted schemes. Allowing use of file:/ or custom schemes is often unexpected.
+   Severity: Medium   Confidence: High
+   CWE: CWE-22 (https://cwe.mitre.org/data/definitions/22.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/blacklists/blacklist_calls.html#b310-urllib-urlopen
+   Location: .\venv\Lib\site-packages\pre_commit\languages\golang.py:104:15
+103         try:
+104             resp = urllib.request.urlopen(_get_url(version))
+105         except urllib.error.HTTPError as e:  # pragma: no cover
+
+--------------------------------------------------
+>> Issue: [B202:tarfile_unsafe_members] tarfile.extractall used without any validation. Please check and discard dangerous members.
+   Severity: High   Confidence: High
+   CWE: CWE-22 (https://cwe.mitre.org/data/definitions/22.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b202_tarfile_unsafe_members.html
+   Location: .\venv\Lib\site-packages\pre_commit\languages\golang.py:119:16
+118                 with _open_archive(f) as archive:
+119                     archive.extractall(dest)
+120             shutil.move(os.path.join(dest, 'go'), os.path.join(dest, '.go'))
+
+--------------------------------------------------
+>> Issue: [B202:tarfile_unsafe_members] tarfile.extractall used without any validation. Please check and discard dangerous members.
+   Severity: High   Confidence: High
+   CWE: CWE-22 (https://cwe.mitre.org/data/definitions/22.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b202_tarfile_unsafe_members.html
+   Location: .\venv\Lib\site-packages\pre_commit\languages\ruby.py:85:12
+84              with tarfile.open(fileobj=bio) as tf:
+85                  tf.extractall(dest)
+86
+
+--------------------------------------------------
+>> Issue: [B310:blacklist] Audit url open for permitted schemes. Allowing use of file:/ or custom schemes is often unexpected.
+   Severity: Medium   Confidence: High
+   CWE: CWE-22 (https://cwe.mitre.org/data/definitions/22.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/blacklists/blacklist_calls.html#b310-urllib-urlopen
+   Location: .\venv\Lib\site-packages\pre_commit\languages\rust.py:94:23
+93
+94                      resp = urllib.request.urlopen(url)
+95
+
+--------------------------------------------------
+>> Issue: [B102:exec_used] Use of exec detected.
+   Severity: Medium   Confidence: High
+   CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b102_exec_used.html
+   Location: .\venv\Lib\site-packages\pygments\formatters\__init__.py:103:12
+102             with open(filename, 'rb') as f:
+103                 exec(f.read(), custom_namespace)
+104             # Retrieve the class `formattername` from that namespace
+
+--------------------------------------------------
+>> Issue: [B102:exec_used] Use of exec detected.
+   Severity: Medium   Confidence: High
+   CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b102_exec_used.html
+   Location: .\venv\Lib\site-packages\pygments\lexers\__init__.py:154:12
+153             with open(filename, 'rb') as f:
+154                 exec(f.read(), custom_namespace)
+155             # Retrieve the class `lexername` from that namespace
+
+--------------------------------------------------
+>> Issue: [B310:blacklist] Audit url open for permitted schemes. Allowing use of file:/ or custom schemes is often unexpected.
+   Severity: Medium   Confidence: High
+   CWE: CWE-22 (https://cwe.mitre.org/data/definitions/22.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/blacklists/blacklist_calls.html#b310-urllib-urlopen
+   Location: .\venv\Lib\site-packages\pygments\lexers\_lua_builtins.py:225:12
+224         def get_newest_version():
+225             f = urlopen('http://www.lua.org/manual/')
+226             r = re.compile(r'^<A HREF="(\d\.\d)/">(Lua )?\1</A>')
+
+--------------------------------------------------
+>> Issue: [B310:blacklist] Audit url open for permitted schemes. Allowing use of file:/ or custom schemes is often unexpected.
+   Severity: Medium   Confidence: High
+   CWE: CWE-22 (https://cwe.mitre.org/data/definitions/22.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/blacklists/blacklist_calls.html#b310-urllib-urlopen
+   Location: .\venv\Lib\site-packages\pygments\lexers\_lua_builtins.py:233:12
+232         def get_lua_functions(version):
+233             f = urlopen(f'http://www.lua.org/manual/{version}/')
+234             r = re.compile(r'^<A HREF="manual.html#pdf-(?!lua|LUA)([^:]+)">\1</A>')
+
+--------------------------------------------------
+>> Issue: [B310:blacklist] Audit url open for permitted schemes. Allowing use of file:/ or custom schemes is often unexpected.
+   Severity: Medium   Confidence: High
+   CWE: CWE-22 (https://cwe.mitre.org/data/definitions/22.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/blacklists/blacklist_calls.html#b310-urllib-urlopen
+   Location: .\venv\Lib\site-packages\pygments\lexers\_mysql_builtins.py:1297:19
+1296            # Pull content from lex.h.
+1297            lex_file = urlopen(LEX_URL).read().decode('utf8', errors='ignore')
+1298            keywords = parse_lex_keywords(lex_file)
+
+--------------------------------------------------
+>> Issue: [B310:blacklist] Audit url open for permitted schemes. Allowing use of file:/ or custom schemes is often unexpected.
+   Severity: Medium   Confidence: High
+   CWE: CWE-22 (https://cwe.mitre.org/data/definitions/22.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/blacklists/blacklist_calls.html#b310-urllib-urlopen
+   Location: .\venv\Lib\site-packages\pygments\lexers\_mysql_builtins.py:1303:27
+1302            # Parse content in item_create.cc.
+1303            item_create_file = urlopen(ITEM_CREATE_URL).read().decode('utf8', errors='ignore')
+1304            functions.update(parse_item_create_functions(item_create_file))
+
+--------------------------------------------------
+>> Issue: [B310:blacklist] Audit url open for permitted schemes. Allowing use of file:/ or custom schemes is often unexpected.
+   Severity: Medium   Confidence: High
+   CWE: CWE-22 (https://cwe.mitre.org/data/definitions/22.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/blacklists/blacklist_calls.html#b310-urllib-urlopen
+   Location: .\venv\Lib\site-packages\pygments\lexers\_php_builtins.py:3299:19
+3298        def get_php_references():
+3299            download = urlretrieve(PHP_MANUAL_URL)
+3300            with tarfile.open(download[0]) as tar:
+
+--------------------------------------------------
+>> Issue: [B202:tarfile_unsafe_members] tarfile.extractall used without any validation. Please check and discard dangerous members.
+   Severity: High   Confidence: High
+   CWE: CWE-22 (https://cwe.mitre.org/data/definitions/22.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b202_tarfile_unsafe_members.html
+   Location: .\venv\Lib\site-packages\pygments\lexers\_php_builtins.py:3304:16
+3303                else:
+3304                    tar.extractall()
+3305            yield from glob.glob(f"{PHP_MANUAL_DIR}{PHP_REFERENCE_GLOB}")
+
+--------------------------------------------------
+>> Issue: [B310:blacklist] Audit url open for permitted schemes. Allowing use of file:/ or custom schemes is often unexpected.
+   Severity: Medium   Confidence: High
+   CWE: CWE-22 (https://cwe.mitre.org/data/definitions/22.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/blacklists/blacklist_calls.html#b310-urllib-urlopen
+   Location: .\venv\Lib\site-packages\pygments\lexers\_postgres_builtins.py:642:18
+641         def update_myself():
+642             content = urlopen(DATATYPES_URL).read().decode('utf-8', errors='ignore')
+643             data_file = list(content.splitlines())
+
+--------------------------------------------------
+>> Issue: [B310:blacklist] Audit url open for permitted schemes. Allowing use of file:/ or custom schemes is often unexpected.
+   Severity: Medium   Confidence: High
+   CWE: CWE-22 (https://cwe.mitre.org/data/definitions/22.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/blacklists/blacklist_calls.html#b310-urllib-urlopen
+   Location: .\venv\Lib\site-packages\pygments\lexers\_postgres_builtins.py:647:18
+646
+647             content = urlopen(KEYWORDS_URL).read().decode('utf-8', errors='ignore')
+648             keywords = parse_keywords(content)
+
+--------------------------------------------------
+>> Issue: [B301:blacklist] Pickle and modules that wrap it can be unsafe when used to deserialize untrusted data, possible security issue.
+   Severity: Medium   Confidence: High
+   CWE: CWE-502 (https://cwe.mitre.org/data/definitions/502.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/blacklists/blacklist_calls.html#b301-pickle
+   Location: .\venv\Lib\site-packages\rich\style.py:475:66
+474             """Get meta information (can not be changed after construction)."""
+475             return {} if self._meta is None else cast(Dict[str, Any], loads(self._meta))
+476
+
+--------------------------------------------------
+>> Issue: [B307:blacklist] Use of possibly insecure function - consider using safer ast.literal_eval.
+   Severity: Medium   Confidence: High
+   CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/blacklists/blacklist_calls.html#b307-eval
+   Location: .\venv\Lib\site-packages\setuptools\_distutils\ccompiler.py:977:27
+976             expected = '"static", "shared", "dylib", "xcode_stub"'
+977             if lib_type not in eval(expected):
+978                 raise ValueError(f"'lib_type' must be {expected}")
+
+--------------------------------------------------
+>> Issue: [B605:start_process_with_a_shell] Starting a process with a shell, possible injection detected, security issue.
+   Severity: High   Confidence: High
+   CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b605_start_process_with_a_shell.html
+   Location: .\venv\Lib\site-packages\setuptools\_distutils\command\bdist_rpm.py:362:14
+361
+362             out = os.popen(q_cmd)
+363             try:
+
+--------------------------------------------------
+>> Issue: [B310:blacklist] Audit url open for permitted schemes. Allowing use of file:/ or custom schemes is often unexpected.
+   Severity: Medium   Confidence: High
+   CWE: CWE-22 (https://cwe.mitre.org/data/definitions/22.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/blacklists/blacklist_calls.html#b310-urllib-urlopen
+   Location: .\venv\Lib\site-packages\setuptools\_distutils\command\register.py:98:19
+97              url = self.repository + '?:action=list_classifiers'
+98              response = urllib.request.urlopen(url)
+99              log.info(self._read_pypi_response(response))
+
+--------------------------------------------------
+>> Issue: [B310:blacklist] Audit url open for permitted schemes. Allowing use of file:/ or custom schemes is often unexpected.
+   Severity: Medium   Confidence: High
+   CWE: CWE-22 (https://cwe.mitre.org/data/definitions/22.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/blacklists/blacklist_calls.html#b310-urllib-urlopen
+   Location: .\venv\Lib\site-packages\setuptools\_distutils\command\upload.py:186:21
+185             try:
+186                 result = urlopen(request)
+187                 status = result.getcode()
+
+--------------------------------------------------
+>> Issue: [B102:exec_used] Use of exec detected.
+   Severity: Medium   Confidence: High
+   CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b102_exec_used.html
+   Location: .\venv\Lib\site-packages\setuptools\_distutils\core.py:267:16
+266                     code = f.read().replace(r'\r\n', r'\n')
+267                     exec(code, g)
+268             finally:
+
+--------------------------------------------------
+>> Issue: [B306:blacklist] Use of insecure and deprecated function (mktemp).
+   Severity: Medium   Confidence: High
+   CWE: CWE-377 (https://cwe.mitre.org/data/definitions/377.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/blacklists/blacklist_calls.html#b306-mktemp-q
+   Location: .\venv\Lib\site-packages\setuptools\_distutils\util.py:422:45
+421
+422                 (script_fd, script_name) = None, mktemp(".py")
+423             log.info("writing byte-compilation script '%s'", script_name)
+
+--------------------------------------------------
+>> Issue: [B604:any_other_function_with_shell_equals_true] Function call with shell=True parameter identified, possible security issue.
+   Severity: Medium   Confidence: Low
+   CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b604_any_other_function_with_shell_equals_true.html
+   Location: .\venv\Lib\site-packages\setuptools\_vendor\jaraco\context.py:31:17
+30          if runner is None:
+31              runner = functools.partial(subprocess.check_call, shell=True)
+32          # In the tar command, use --strip-components=1 to strip the first path and
+
+--------------------------------------------------
+>> Issue: [B307:blacklist] Use of possibly insecure function - consider using safer ast.literal_eval.
+   Severity: Medium   Confidence: High
+   CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/blacklists/blacklist_calls.html#b307-eval
+   Location: .\venv\Lib\site-packages\setuptools\_vendor\jaraco\functools.py:519:27
+518                     try:
+519                         return eval(use)
+520                     except TypeError:
+
+--------------------------------------------------
+>> Issue: [B102:exec_used] Use of exec detected.
+   Severity: Medium   Confidence: High
+   CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b102_exec_used.html
+   Location: .\venv\Lib\site-packages\setuptools\build_meta.py:335:8
+334
+335             exec(code, locals())
+336
+
+--------------------------------------------------
+>> Issue: [B302:blacklist] Deserialization with the marshal module is possibly dangerous.
+   Severity: Medium   Confidence: High
+   CWE: CWE-502 (https://cwe.mitre.org/data/definitions/502.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/blacklists/blacklist_calls.html#b302-marshal
+   Location: .\venv\Lib\site-packages\setuptools\command\bdist_egg.py:377:11
+376         f.read(skip)
+377         code = marshal.load(f)
+378         f.close()
+
+--------------------------------------------------
+>> Issue: [B310:blacklist] Audit url open for permitted schemes. Allowing use of file:/ or custom schemes is often unexpected.
+   Severity: Medium   Confidence: High
+   CWE: CWE-22 (https://cwe.mitre.org/data/definitions/22.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/blacklists/blacklist_calls.html#b310-urllib-urlopen
+   Location: .\venv\Lib\site-packages\setuptools\config\_validate_pyproject\formats.py:120:9
+119         context = ssl.create_default_context()
+120         with urlopen(url, context=context) as response:
+121             headers = Message()
+
+--------------------------------------------------
+>> Issue: [B302:blacklist] Deserialization with the marshal module is possibly dangerous.
+   Severity: Medium   Confidence: High
+   CWE: CWE-502 (https://cwe.mitre.org/data/definitions/502.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/blacklists/blacklist_calls.html#b302-marshal
+   Location: .\venv\Lib\site-packages\setuptools\depends.py:112:19
+111                 f.read(8)  # skip magic & date
+112                 code = marshal.load(f)
+113             elif kind == PY_FROZEN:
+
+--------------------------------------------------
+>> Issue: [B102:exec_used] Use of exec detected.
+   Severity: Medium   Confidence: High
+   CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b102_exec_used.html
+   Location: .\venv\Lib\site-packages\setuptools\launch.py:32:4
+31          code = compile(norm_script, script_name, 'exec')
+32          exec(code, namespace)
+33
+
+--------------------------------------------------
+>> Issue: [B605:start_process_with_a_shell] Starting a process with a shell, possible injection detected, security issue.
+   Severity: High   Confidence: High
+   CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b605_start_process_with_a_shell.html
+   Location: .\venv\Lib\site-packages\setuptools\package_index.py:860:8
+859             self.info("Doing subversion checkout from %s to %s", url, filename)
+860             os.system("svn checkout%s -q %s %s" % (creds, url, filename))
+861             return filename
+
+--------------------------------------------------
+>> Issue: [B605:start_process_with_a_shell] Starting a process with a shell, possible injection detected, security issue.
+   Severity: High   Confidence: High
+   CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b605_start_process_with_a_shell.html
+   Location: .\venv\Lib\site-packages\setuptools\package_index.py:886:8
+885             self.info("Doing git clone from %s to %s", url, filename)
+886             os.system("git clone --quiet %s %s" % (url, filename))
+887
+
+--------------------------------------------------
+>> Issue: [B605:start_process_with_a_shell] Starting a process with a shell, possible injection detected, security issue.
+   Severity: High   Confidence: High
+   CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b605_start_process_with_a_shell.html
+   Location: .\venv\Lib\site-packages\setuptools\package_index.py:890:12
+889                 self.info("Checking out %s", rev)
+890                 os.system("git -C %s checkout --quiet %s" % (
+891                     filename,
+892                     rev,
+893                 ))
+894
+
+--------------------------------------------------
+>> Issue: [B605:start_process_with_a_shell] Starting a process with a shell, possible injection detected, security issue.
+   Severity: High   Confidence: High
+   CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b605_start_process_with_a_shell.html
+   Location: .\venv\Lib\site-packages\setuptools\package_index.py:902:8
+901             self.info("Doing hg clone from %s to %s", url, filename)
+902             os.system("hg clone --quiet %s %s" % (url, filename))
+903
+
+--------------------------------------------------
+>> Issue: [B605:start_process_with_a_shell] Starting a process with a shell, possible injection detected, security issue.
+   Severity: High   Confidence: High
+   CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b605_start_process_with_a_shell.html
+   Location: .\venv\Lib\site-packages\setuptools\package_index.py:906:12
+905                 self.info("Updating to %s", rev)
+906                 os.system("hg --cwd %s up -C -r %s -q" % (
+907                     filename,
+908                     rev,
+909                 ))
+910
+
+--------------------------------------------------
+>> Issue: [B310:blacklist] Audit url open for permitted schemes. Allowing use of file:/ or custom schemes is often unexpected.
+   Severity: Medium   Confidence: High
+   CWE: CWE-22 (https://cwe.mitre.org/data/definitions/22.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/blacklists/blacklist_calls.html#b310-urllib-urlopen
+   Location: .\venv\Lib\site-packages\setuptools\package_index.py:1103:15
+1102        if os.path.isfile(filename):
+1103            return urllib.request.urlopen(url)
+1104        elif path.endswith('/') and os.path.isdir(filename):
+
+--------------------------------------------------
+>> Issue: [B102:exec_used] Use of exec detected.
+   Severity: Medium   Confidence: High
+   CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b102_exec_used.html
+   Location: .\venv\Lib\site-packages\setuptools\sandbox.py:46:4
+45          code = compile(script, filename, 'exec')
+46          exec(code, globals, locals)
+47
+
+--------------------------------------------------
+>> Issue: [B102:exec_used] Use of exec detected.
+   Severity: Medium   Confidence: High
+   CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b102_exec_used.html
+   Location: .\venv\Lib\site-packages\six.py:740:8
+739                 _locs_ = _globs_
+740             exec("""exec _code_ in _globs_, _locs_""")
+741
+
+--------------------------------------------------
+>> Issue: [B108:hardcoded_tmp_directory] Probable insecure usage of temp file/directory.
+   Severity: Medium   Confidence: Medium
+   CWE: CWE-377 (https://cwe.mitre.org/data/definitions/377.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b108_hardcoded_tmp_directory.html
+   Location: .\venv\Lib\site-packages\stevedore\_cache.py:153:39
+152                     os.path.isfile(os.path.join(self._dir, '.disable')),
+153                     sys.executable[0:4] == '/tmp',  # noqa: S108,
+154                 ]
+
+--------------------------------------------------
+>> Issue: [B108:hardcoded_tmp_directory] Probable insecure usage of temp file/directory.
+   Severity: Medium   Confidence: Medium
+   CWE: CWE-377 (https://cwe.mitre.org/data/definitions/377.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b108_hardcoded_tmp_directory.html
+   Location: .\venv\Lib\site-packages\stevedore\tests\test_cache.py:28:50
+27              """
+28              with mock.patch.object(sys, 'executable', '/tmp/fake'):
+29                  sot = _cache.Cache()
+
+--------------------------------------------------
+>> Issue: [B307:blacklist] Use of possibly insecure function - consider using safer ast.literal_eval.
+   Severity: Medium   Confidence: High
+   CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/blacklists/blacklist_calls.html#b307-eval
+   Location: .\venv\Lib\site-packages\typing_extensions.py:4034:53
+4033            return_value = {key:
+4034                value if not isinstance(value, str) else eval(value, globals, locals)
+4035                for key, value in ann.items() }
+
+--------------------------------------------------
+>> Issue: [B307:blacklist] Use of possibly insecure function - consider using safer ast.literal_eval.
+   Severity: Medium   Confidence: High
+   CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/blacklists/blacklist_calls.html#b307-eval
+   Location: .\venv\Lib\site-packages\typing_extensions.py:4116:20
+4115                code = forward_ref.__forward_code__
+4116                value = eval(code, globals, locals)
+4117            forward_ref.__forward_evaluated__ = True
+
+--------------------------------------------------
+>> Issue: [B323:blacklist] By default, Python will create a secure, verified ssl context for use in such classes as HTTPSConnection. However, it still allows using an insecure context via the _create_unverified_context that  reverts to the previous behavior that does not validate certificates or perform hostname checks.
+   Severity: Medium   Confidence: High
+   CWE: CWE-295 (https://cwe.mitre.org/data/definitions/295.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/blacklists/blacklist_calls.html#b323-unverified-context
+   Location: .\venv\Lib\site-packages\virtualenv\seed\wheels\periodic_update.py:376:14
+375             )
+376             yield ssl._create_unverified_context()  # noqa: S323, SLF001
+377
+
+--------------------------------------------------
+>> Issue: [B310:blacklist] Audit url open for permitted schemes. Allowing use of file:/ or custom schemes is often unexpected.
+   Severity: Medium   Confidence: High
+   CWE: CWE-22 (https://cwe.mitre.org/data/definitions/22.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/blacklists/blacklist_calls.html#b310-urllib-urlopen
+   Location: .\venv\Lib\site-packages\virtualenv\seed\wheels\periodic_update.py:401:13
+400         try:
+401             with urlopen(url, context=context) as file_handler:  # noqa: S310
+402                 return json.load(file_handler)
+
+--------------------------------------------------
+
+Code scanned:
+        Total lines of code: 570856
+        Total lines skipped (#nosec): 0
+
+Run metrics:
+        Total issues (by severity):
+                Undefined: 0
+                Low: 3324
+                Medium: 69
+                High: 34
+        Total issues (by confidence):
+                Undefined: 0
+                Low: 4
+                Medium: 35
+                High: 3388
+Files skipped (0):
+(venv) PS C:\Projects\SovereignNode9010>
+(venv) PS C:\Projects\SovereignNode9010> # Run Rule Verifier test
+(venv) PS C:\Projects\SovereignNode9010> python core\rule_verifier_v3_9_1.py
+Traceback (most recent call last):
+  File "C:\Projects\SovereignNode9010\core\rule_verifier_v3_9_1.py", line 22, in <module>
+    import networkx as nx
+ModuleNotFoundError: No module named 'networkx'
+(venv) PS C:\Projects\SovereignNode9010>
+(venv) PS C:\Projects\SovereignNode9010> # Run full GrokNetCore pipeline test
+(venv) PS C:\Projects\SovereignNode9010> python core\groknett_core.py
+Traceback (most recent call last):
+  File "C:\Projects\SovereignNode9010\core\groknett_core.py", line 32, in <module>
+    from config import (
+ModuleNotFoundError: No module named 'config'
+(venv) PS C:\Projects\SovereignNode9010> # 1. Install missing dependencies
+(venv) PS C:\Projects\SovereignNode9010> pip install networkx numpy types-networkx
+Collecting networkx
+  Downloading networkx-3.6.1-py3-none-any.whl.metadata (6.8 kB)
+Collecting numpy
+  Downloading numpy-2.4.6-cp311-cp311-win_amd64.whl.metadata (6.6 kB)
+Collecting types-networkx
+  Downloading types_networkx-3.6.1.20260518-py3-none-any.whl.metadata (1.8 kB)
+Downloading networkx-3.6.1-py3-none-any.whl (2.1 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.1/2.1 MB 3.1 MB/s  0:00:00
+Downloading numpy-2.4.6-cp311-cp311-win_amd64.whl (12.6 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 12.6/12.6 MB 3.7 MB/s  0:00:03
+Downloading types_networkx-3.6.1.20260518-py3-none-any.whl (162 kB)
+Installing collected packages: numpy, networkx, types-networkx
+Successfully installed networkx-3.6.1 numpy-2.4.6 types-networkx-3.6.1.20260518
+(venv) PS C:\Projects\SovereignNode9010>
+(venv) PS C:\Projects\SovereignNode9010> # 2. Initialize git (required for pre-commit)
+(venv) PS C:\Projects\SovereignNode9010> git init
+git : The term 'git' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the
+spelling of the name, or if a path was included, verify that the path is correct and try again.
+At line:1 char:1
++ git init
++ ~~~
+    + CategoryInfo          : ObjectNotFound: (git:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+(venv) PS C:\Projects\SovereignNode9010> git add .
+git : The term 'git' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the
+spelling of the name, or if a path was included, verify that the path is correct and try again.
+At line:1 char:1
++ git add .
++ ~~~
+    + CategoryInfo          : ObjectNotFound: (git:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+(venv) PS C:\Projects\SovereignNode9010> git commit -m "Initial Sovereign Node 9010 v3.9.1 deployment"
+git : The term 'git' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the
+spelling of the name, or if a path was included, verify that the path is correct and try again.
+At line:1 char:1
++ git commit -m "Initial Sovereign Node 9010 v3.9.1 deployment"
++ ~~~
+    + CategoryInfo          : ObjectNotFound: (git:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+(venv) PS C:\Projects\SovereignNode9010>
+(venv) PS C:\Projects\SovereignNode9010> # 3. Re-install pre-commit hooks
+(venv) PS C:\Projects\SovereignNode9010> pre-commit install
+An error has occurred: FatalError: git failed. Is it installed, and are you in a Git repository directory?
+Check the log at C:\Users\justo\.cache\pre-commit\pre-commit.log
+(venv) PS C:\Projects\SovereignNode9010>
+(venv) PS C:\Projects\SovereignNode9010> # 4. Run Ruff format (auto-fix)
+(venv) PS C:\Projects\SovereignNode9010> ruff format .
+9 files reformatted, 1 file left unchanged
+(venv) PS C:\Projects\SovereignNode9010>
+(venv) PS C:\Projects\SovereignNode9010> # 5. Fix import path in groknett_core.py (temporary fix)
+(venv) PS C:\Projects\SovereignNode9010> # Change: from config import ...
+(venv) PS C:\Projects\SovereignNode9010> # To:     from deployment.config import ...
+(venv) PS C:\Projects\SovereignNode9010> # 1. Fix the import path in groknett_core.py (critical)
+(venv) PS C:\Projects\SovereignNode9010> # Change line 32 from:
+(venv) PS C:\Projects\SovereignNode9010> #     from config import (
+(venv) PS C:\Projects\SovereignNode9010> # To:
+(venv) PS C:\Projects\SovereignNode9010> #     from deployment.config import (
+(venv) PS C:\Projects\SovereignNode9010>
+(venv) PS C:\Projects\SovereignNode9010> # Quick fix using PowerShell (replace the import)
+(venv) PS C:\Projects\SovereignNode9010> (Get-Content core\groknett_core.py) -replace 'from config import', 'from deployment.config import' | Set-Content core\groknett_core.py
+(venv) PS C:\Projects\SovereignNode9010>
+(venv) PS C:\Projects\SovereignNode9010> # 2. Test the main files again
+(venv) PS C:\Projects\SovereignNode9010> python core\rule_verifier_v3_9_1.py
+2026-05-30 11:57:55,704 | INFO | RuleVerifierV391 | [RuleVerifier v3.9.1] Initialized with 52 patterns
+2026-05-30 11:57:55,704 | INFO | RuleVerifierV391 | [RuleVerifier v3.9.1] Starting full verification...
+2026-05-30 11:57:55,704 | WARNING | RuleVerifierV391 | Found 2 circular dependencies
+2026-05-30 11:57:55,704 | INFO | RuleVerifierV391 | [RuleVerifier v3.9.1] Verification complete — Status: FAIL
+
+=== SOVEREIGN NODE 9010 RULE VERIFICATION REPORT v3.9.1 ===
+Timestamp: 2026-05-30T02:27:55.704918+00:00
+Total Rules: 52
+Status: FAIL
+
+--- CONTRADICTIONS (3) ---
+  • DD-002 ↔ DD-008: Opposing conclusions with shared conditions or critical severity
+  • DD-002 ↔ DD-040: Opposing conclusions with shared conditions or critical severity
+  • DD-019 ↔ DD-040: Opposing conclusions with shared conditions or critical severity
+
+--- CIRCULAR DEPENDENCIES (2) ---
+  • DD-038 → DD-011
+  • DD-031 → DD-001
+
+--- OVERLAPS (2) ---
+  • DD-001 + DD-031: 0.667 overlap (HIGH)
+  • DD-011 + DD-038: 1.0 overlap (HIGH)
+
+--- COVERAGE ---
+  Critical: 14
+  High:     33
+  Score:    0.587
+
+=== END OF REPORT ===
+
+(venv) PS C:\Projects\SovereignNode9010> python core\groknett_core.py
+Traceback (most recent call last):
+  File "C:\Projects\SovereignNode9010\core\groknett_core.py", line 32, in <module>
+    from deployment.config import (
+ModuleNotFoundError: No module named 'deployment'
+(venv) PS C:\Projects\SovereignNode9010> # Move config files into core/ for clean imports
+(venv) PS C:\Projects\SovereignNode9010> Move-Item deployment\config.py, deployment\constants.py, deployment\logging_config.py -Destination core\ -Force
+(venv) PS C:\Projects\SovereignNode9010>
+(venv) PS C:\Projects\SovereignNode9010> # Now test again
+(venv) PS C:\Projects\SovereignNode9010> python core\groknett_core.py
+Traceback (most recent call last):
+  File "C:\Projects\SovereignNode9010\core\groknett_core.py", line 32, in <module>
+    from deployment.config import (
+ModuleNotFoundError: No module named 'deployment'
+(venv) PS C:\Projects\SovereignNode9010> (Get-Content core\groknett_core.py) -replace 'from deployment\.config import', 'from config import' | Set-Content core\groknett_core.py
+(venv) PS C:\Projects\SovereignNode9010> python core\groknett_core.py
+2026-05-30 12:01:26 | INFO     | GrokNetCoreV391 | Logging initialized → \home\workdir\artifacts\Sovereign-Node-9010\04_Logs\sovereign_node_20260530.log
+2026-05-30 12:01:33,719 | INFO | FactsRegistryV391 | [FactsRegistry v3.9.1] Initialized at /home/workdir/artifacts/Sovereign-Node-9010/03_Vault/facts_registry.db
+2026-05-30 12:01:33,719 | INFO | FactsRegistryV391 | [FactsRegistry v3.9.1] Initialized at /home/workdir/artifacts/Sovereign-Node-9010/03_Vault/facts_registry.db
+2026-05-30 12:01:33,727 | INFO | DeceptionScannerV391 | [DeceptionScanner v3.9.1] Initialized with 52 patterns | UID=0.15 | Consensus=0.7
+2026-05-30 12:01:33 | INFO     | GrokNetCoreV391 | [2026-05-30 02:31:33.727723+00:00] Sovereign Node 9010 ValueForge GrokNet v3.9.1 initialized — Four-Gate Model active.
+Traceback (most recent call last):
+  File "C:\Projects\SovereignNode9010\core\groknett_core.py", line 461, in <module>
+    result = core.process_input(
+             ^^^^^^^^^^^^^^^^^^^
+  File "C:\Projects\SovereignNode9010\core\groknett_core.py", line 321, in process_input
+    fact_uuid = self.registry.add_fact(
+                ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Projects\SovereignNode9010\core\facts_registry.py", line 172, in add_fact
+    cursor.execute(
+sqlite3.OperationalError: table audit_ledger has no column named nizk_proof
+(venv) PS C:\Projects\SovereignNode9010> # Delete old database so it recreates with correct schema
+(venv) PS C:\Projects\SovereignNode9010> Remove-Item data\facts_registry.db -Force -ErrorAction SilentlyContinue
+(venv) PS C:\Projects\SovereignNode9010>
+(venv) PS C:\Projects\SovereignNode9010> # Run full pipeline again
+(venv) PS C:\Projects\SovereignNode9010> python core\groknett_core.py
+2026-05-30 12:02:46 | INFO     | GrokNetCoreV391 | Logging initialized → \home\workdir\artifacts\Sovereign-Node-9010\04_Logs\sovereign_node_20260530.log
+2026-05-30 12:02:46,102 | INFO | FactsRegistryV391 | [FactsRegistry v3.9.1] Initialized at /home/workdir/artifacts/Sovereign-Node-9010/03_Vault/facts_registry.db
+2026-05-30 12:02:46,102 | INFO | FactsRegistryV391 | [FactsRegistry v3.9.1] Initialized at /home/workdir/artifacts/Sovereign-Node-9010/03_Vault/facts_registry.db
+2026-05-30 12:02:46,102 | INFO | DeceptionScannerV391 | [DeceptionScanner v3.9.1] Initialized with 52 patterns | UID=0.15 | Consensus=0.7
+2026-05-30 12:02:46 | INFO     | GrokNetCoreV391 | [2026-05-30 02:32:46.102174+00:00] Sovereign Node 9010 ValueForge GrokNet v3.9.1 initialized — Four-Gate Model active.
+Traceback (most recent call last):
+  File "C:\Projects\SovereignNode9010\core\groknett_core.py", line 461, in <module>
+    result = core.process_input(
+             ^^^^^^^^^^^^^^^^^^^
+  File "C:\Projects\SovereignNode9010\core\groknett_core.py", line 321, in process_input
+    fact_uuid = self.registry.add_fact(
+                ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Projects\SovereignNode9010\core\facts_registry.py", line 172, in add_fact
+    cursor.execute(
+sqlite3.OperationalError: table audit_ledger has no column named nizk_proof
+(venv) PS C:\Projects\SovereignNode9010> (Get-Content core\facts_registry.py) -replace 'nizk_proof', 'NULL' | Set-Content core\facts_registry.py
+(venv) PS C:\Projects\SovereignNode9010> python core\groknett_core.py
+2026-05-30 12:03:51 | INFO     | GrokNetCoreV391 | Logging initialized → \home\workdir\artifacts\Sovereign-Node-9010\04_Logs\sovereign_node_20260530.log
+2026-05-30 12:03:51,266 | INFO | FactsRegistryV391 | [FactsRegistry v3.9.1] Initialized at /home/workdir/artifacts/Sovereign-Node-9010/03_Vault/facts_registry.db
+2026-05-30 12:03:51,266 | INFO | FactsRegistryV391 | [FactsRegistry v3.9.1] Initialized at /home/workdir/artifacts/Sovereign-Node-9010/03_Vault/facts_registry.db
+2026-05-30 12:03:51,270 | INFO | DeceptionScannerV391 | [DeceptionScanner v3.9.1] Initialized with 52 patterns | UID=0.15 | Consensus=0.7
+2026-05-30 12:03:51 | INFO     | GrokNetCoreV391 | [2026-05-30 02:33:51.270811+00:00] Sovereign Node 9010 ValueForge GrokNet v3.9.1 initialized — Four-Gate Model active.
+Traceback (most recent call last):
+  File "C:\Projects\SovereignNode9010\core\groknett_core.py", line 461, in <module>
+    result = core.process_input(
+             ^^^^^^^^^^^^^^^^^^^
+  File "C:\Projects\SovereignNode9010\core\groknett_core.py", line 321, in process_input
+    fact_uuid = self.registry.add_fact(
+                ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Projects\SovereignNode9010\core\facts_registry.py", line 172, in add_fact
+    cursor.execute(
+sqlite3.OperationalError: near "NULL": syntax error
+(venv) PS C:\Projects\SovereignNode9010>
