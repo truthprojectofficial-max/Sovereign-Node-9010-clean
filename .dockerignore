@@ -1,0 +1,9 @@
+*.txt
+*.log
+*.md
+.aider*
+node_modules
+dist
+data
+input
+output
