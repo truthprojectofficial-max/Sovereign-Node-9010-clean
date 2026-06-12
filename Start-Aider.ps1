@@ -153,4 +153,11 @@ $args += "--show-diffs"
 $args += "--pretty"
 
 Write-Host "`nStarting Aider..." -ForegroundColor Green
-python -m aider @args
+
+# Construct the python argument list and invoke python using the call operator so PowerShell
+# correctly expands the argument array for the external process. This avoids issues where
+# the @args token isn't expanded as expected when calling an external executable.
+$pythonArgs = @("-m","aider") + $args
+
+# Use the call operator & to run the python executable with the argument array.
+& python @pythonArgs
