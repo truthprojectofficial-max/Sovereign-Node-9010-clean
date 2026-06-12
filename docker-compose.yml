@@ -1,0 +1,113 @@
+version: '3.9'
+
+services:
+  # ============================================================================
+  # API Service — REST/Audit/Forensic Endpoint
+  # ============================================================================
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: sovereign-node-api
+    ports:
+      - "8000:8000"
+    environment:
+      NODE_ENV: production
+      PORT: 8000
+      LOG_LEVEL: info
+      DB_PATH: /app/data/database.sqlite
+    volumes:
+      - ./data:/app/data
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:8000/api/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    networks:
+      - sovereign-network
+    depends_on:
+      - cli
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # ============================================================================
+  # CLI Service — REPL/Interactive Command Handler (sidecar)
+  # ============================================================================
+  cli:
+    build:
+      context: .
+      dockerfile: Dockerfile.cli
+    container_name: sovereign-node-cli
+    environment:
+      NODE_ENV: production
+      LOG_LEVEL: debug
+      API_ENDPOINT: http://api:8000
+      DB_PATH: /app/data/database.sqlite
+    volumes:
+      - ./data:/app/data
+      - ./input:/app/input       # Mount input commands
+      - ./output:/app/output     # Mount output results
+    networks:
+      - sovereign-network
+    depends_on:
+      api:
+        condition: service_healthy
+    stdin_open: true
+    tty: true
+    restart: on-failure
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "5m"
+        max-file: "2"
+
+  # ============================================================================
+  # CMP Service — Component Registry & Hot-Reload (development aid)
+  # ============================================================================
+  cmp:
+    build:
+      context: .
+      dockerfile: Dockerfile.cmp
+    container_name: sovereign-node-cmp
+    ports:
+      - "8001:8001"
+    environment:
+      NODE_ENV: development
+      PORT: 8001
+      LOG_LEVEL: debug
+      API_ENDPOINT: http://api:8000
+      CMP_WATCH_DIR: /app/src
+    volumes:
+      - ./src:/app/src
+      - ./dist:/app/dist
+      - ./data:/app/data
+    networks:
+      - sovereign-network
+    depends_on:
+      api:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:8001/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+networks:
+  sovereign-network:
+    driver: bridge
+
+volumes:
+  data:
+    driver: local
