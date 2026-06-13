@@ -7,9 +7,15 @@
 # Research-optimized defaults for MSI Prestige-class hardware (8GB VRAM tier)
 # Recommended: qwen2.5-coder:7b-instruct-q4_K_M (Goldilocks for coding + VRAM)
 # Alternative heavier: qwen2.5-coder:14b or qwen3-9b Q4_K_M (if full GPU offload fits)
-model: ollama/qwen2.5-coder:7b-instruct-q4_K_M
-weak-model: ollama/qwen2.5:3b-instruct-q4_K_M   # Fast router / simple tasks
-editor-model: ollama/qwen2.5-coder:7b-instruct-q4_K_M
+# NOTE: Ollama references are commented out to avoid automatic external connections.
+# To re-enable Ollama, uncomment the following lines and ensure Ollama is running locally.
+# model: ollama/qwen2.5-coder:7b-instruct-q4_K_M
+# weak-model: ollama/qwen2.5:3b-instruct-q4_K_M   # Fast router / simple tasks
+# editor-model: ollama/qwen2.5-coder:7b-instruct-q4_K_M
+
+# Use a neutral local mode to prevent attempts to contact Ollama by default.
+model: null
+disable-model-connection: true
 
 # Ollama connection (default localhost:11434)
 # ollama-api-base: http://127.0.0.1:11434
